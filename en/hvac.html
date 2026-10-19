@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HVAC Simulation | Carlos Mollá</title>
+<meta name="description" content="Design and hourly simulation of the HVAC system of an office building in Palermo: air handling unit, fan coils and reversible heat pump.">
+<meta property="og:title" content="HVAC simulation of an office building, Carlos Mollá">
+<meta property="og:description" content="From the unconditioned building to the optimised scenario: −44 % annual cost and 13.65 kWh/m² per year.">
+<meta property="og:image" content="../assets/hvac/confort-final.webp">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="es" href="../hvac.html">
+<link rel="alternate" hreflang="en" href="hvac.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body class="pag-proyecto">
+<a class="saltar" href="#contenido">Skip to content</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html"><span class="ini">C</span>arlos <span class="ini">M</span>ollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Sections">
+      <ul id="pestanas">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="energia.html">Energy</a></li>
+        <li><a href="hvac.html" aria-current="page">HVAC</a></li>
+        <li><a href="ia.html">AI</a></li>
+        <li><a href="sostenibilidad.html">Sustainability</a></li>
+        <li><a href="index.html#contacto">Contact</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+    <div class="idioma" role="group" aria-label="Language"><a href="../hvac.html" hreflang="es" lang="es" title="Español">ES</a><a href="hvac.html" hreflang="en" lang="en" aria-current="true" title="English">EN</a></div>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA DEL PROYECTO -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla">
+      <div class="herr-pagina" aria-label="Tools used"><span>Tools</span><ul><li>Python</li><li>MATLAB</li><li>EES</li><li>AutoCAD</li><li>Generative AI</li></ul></div>
+      <div class="proyecto-texto">
+        <span class="antetitulo">Master's project, University of Liège</span>
+        <h1 id="titulo">HVAC Simulation</h1>
+        <p class="entrada">I designed from scratch, and simulated hour by hour over a full year, the air conditioning system of a 200 m² office building in Palermo (Italy): air handling unit, four-pipe fan coils and a reversible heat pump. The goal was to bring the building close to nearly zero energy consumption without sacrificing thermal comfort.</p>
+        <p class="original">Course “Energy Flexibility in Buildings”</p>
+        <ul class="datos">
+          <li><strong>−44 %</strong><span>annual cost of the optimised scenario</span></li>
+          <li><strong>13.65</strong><span>kWh/m² per year of final energy use</span></li>
+          <li><strong>3.18</strong><span>heat pump SCOP (reference: 2.8)</span></li>
+        </ul>
+      </div>
+      <figure class="figura-cabeza planta-viva" id="planta">
+        <div class="planta-lienzo">
+          <svg viewBox="0 0 600 400" role="img" aria-labelledby="pl-t pl-d" id="planta-svg">
+            <title id="pl-t">Floor plan of the office building with the airflow streamlines</title>
+            <desc id="pl-d">The treated air leaves the diffusers in the offices and the dining room, mixes with the air in each room and mostly returns through that room's return grilles; a fraction passes into the corridor as transfer air and is extracted through the toilet and the end of the corridor. The lines change from blue to orange as the air warms up.</desc>
+            <rect x="20" y="20" width="560" height="360" rx="6" class="pl-suelo"/>
+            <rect x="250" y="170" width="330" height="55" class="pl-pasillo"/><rect x="250" y="225" width="55" height="155" class="pl-pasillo"/>
+            <rect x="52" y="60" width="34" height="20" rx="3" class="pl-mueble"/><rect x="52" y="150" width="34" height="20" rx="3" class="pl-mueble"/><rect x="52" y="240" width="34" height="20" rx="3" class="pl-mueble"/><rect x="122" y="60" width="34" height="20" rx="3" class="pl-mueble"/><rect x="122" y="150" width="34" height="20" rx="3" class="pl-mueble"/><rect x="122" y="240" width="34" height="20" rx="3" class="pl-mueble"/><rect x="192" y="60" width="34" height="20" rx="3" class="pl-mueble"/><rect x="192" y="150" width="34" height="20" rx="3" class="pl-mueble"/><rect x="192" y="240" width="34" height="20" rx="3" class="pl-mueble"/><rect x="290" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="360" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="430" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="500" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="330" y="110" width="34" height="20" rx="3" class="pl-mueble"/><rect x="430" y="110" width="34" height="20" rx="3" class="pl-mueble"/><rect x="345" y="290" width="62" height="34" rx="5" class="pl-mueble"/><circle cx="520" cy="350" r="9" class="pl-mueble"/><circle cx="555" cy="350" r="9" class="pl-mueble"/><rect x="510" y="245" width="58" height="18" rx="4" class="pl-mueble"/>
+            <g id="pl-rutas"><path class="pl-ruta" d="M80 95 C 60 180, 160 250, 200 320 S 240 347, 262 347 C 282 345, 280 300, 278 250 C 276 205, 330 198, 420 198 S 520 198, 562 198"/><path class="pl-ruta" d="M190 95 C 230 160, 130 220, 160 300 S 230 352, 262 350 C 284 332, 286 240, 330 203 S 470 201, 482 222 C 492 262, 520 300, 540 322"/><path class="pl-ruta" d="M70 300 C 100 255, 190 300, 215 338 S 245 354, 262 354 C 282 350, 279 280, 300 214 S 420 192, 562 198"/><path class="pl-ruta" d="M190 300 C 205 332, 232 343, 262 341 C 288 328, 283 232, 342 206 S 470 206, 485 226 C 500 268, 525 305, 540 322"/><path class="pl-ruta" d="M330 85 C 360 135, 450 112, 500 140 S 528 160, 533 180 C 540 193, 548 197, 562 198"/><path class="pl-ruta" d="M480 85 C 425 110, 405 150, 470 152 S 530 158, 535 182 C 522 210, 497 205, 486 228 C 500 270, 525 305, 540 322"/><path class="pl-ruta" d="M378 268 C 425 330, 345 352, 333 300 S 322 266, 300 262 C 284 255, 290 214, 342 205 S 470 205, 485 228 C 500 270, 525 305, 540 322"/></g>
+            <g class="pl-muros">
+              <path d="M265 380 H20 V20 H580 V380 H295"/>
+              <path d="M250 20 V330 M250 365 V380"/>
+              <path d="M250 170 H515 M550 170 H580"/>
+              <path d="M305 225 H450 M450 225 H465 M500 225 H580"/>
+              <path d="M305 225 V245 M305 280 V380"/>
+              <path d="M450 225 V380"/>
+            </g>
+            <g class="pl-difusor"><circle cx="80" cy="95" r="7"/><circle cx="190" cy="95" r="7"/><circle cx="70" cy="300" r="7"/><circle cx="190" cy="300" r="7"/><circle cx="330" cy="85" r="7"/><circle cx="480" cy="85" r="7"/><circle cx="378" cy="268" r="7"/></g>
+            <g class="pl-rejilla"><rect x="554" y="190" width="16" height="16" rx="3"/><rect x="532" y="314" width="16" height="16" rx="3"/><rect x="128" y="198" width="14" height="14" rx="3"/><rect x="128" y="323" width="14" height="14" rx="3"/><rect x="398" y="91" width="14" height="14" rx="3"/><rect x="418" y="345" width="14" height="14" rx="3"/></g>
+            <g class="pl-et">
+              <text x="135" y="368" text-anchor="middle">Office 2</text>
+              <text x="415" y="160" text-anchor="middle">Office 1</text>
+              <text x="430" y="217" text-anchor="middle">Corridor</text>
+              <text x="378" y="368" text-anchor="middle">Dining room</text>
+              <text x="515" y="368" text-anchor="middle">Toilet</text>
+            </g>
+          </svg>
+          <canvas id="planta-canvas" aria-hidden="true"></canvas>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 1. EL RETO -->
+  <section class="seccion" aria-labelledby="t-reto">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">The challenge</span>
+        <h2 id="t-reto">A mild climate, but very humid and with demanding summers</h2>
+      </div>
+      <div class="prosa">
+        <p class="revelar">Palermo has mild winters and hot summers: with the typical meteorological year (TMY), the outdoor temperature ranges from 2.1 °C to 33.5 °C, with an average relative humidity of 74.7 %. Dehumidification is therefore an essential part of the design.</p>
+        <p class="revelar">Before sizing any equipment, I simulated the building without air conditioning. In summer the indoor temperature reached 45 °C, even above the outdoor temperature, and in winter it dropped to 9 °C. Most hours fell outside the acceptable thermal comfort categories, which confirmed the need for an active system in both seasons.</p>
+        <ul class="lista-ventajas revelar">
+          <li><strong>Comfort</strong><span>Operating range of 20 to 24 °C in occupied zones.</span></li>
+          <li><strong>Air quality</strong><span>Hygienic ventilation of 3.6 m³/h per m² and occupancy according to ASHRAE 62.1.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. LA INSTALACIÓN -->
+  <section class="seccion" aria-labelledby="t-instalacion">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">System design</span>
+        <h2 id="t-instalacion" class="titulo-naranja">The installation, component by component</h2>
+      </div>
+      <div class="instalacion revelar" id="instalacion" data-estacion="invierno">
+        <div class="inst-cabeza">
+          <p class="gris">Select a component to see how I modelled it. Switch seasons to see how the system adapts.</p>
+          <div class="estaciones" role="group" aria-label="Season">
+            <button type="button" class="estacion" data-estacion="invierno" aria-pressed="true">Winter</button>
+            <button type="button" class="estacion" data-estacion="verano" aria-pressed="false">Summer</button>
+          </div>
+        </div>
+        <div class="inst-aire">
+          <button type="button" class="comp" data-comp="exterior"><span class="comp-et">Outdoor air</span><strong>2.1–33.5 °C</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="recuperador"><span class="comp-et">Heat recovery</span><strong id="c-rec">Preheats</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="baterias"><span class="comp-et">Coils</span><strong id="c-bat">Heating</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="ventilador"><span class="comp-et">Fan</span><strong>SFP 1,200</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="zonas"><span class="comp-et">5 zones + fan coils</span><strong>20–24 °C</strong></button>
+        </div>
+        <div class="inst-agua" aria-hidden="true">
+          <span class="agua-tramo agua-izq"><span class="agua-et" id="c-agua">Hot water at 45 °C</span></span>
+          <span class="agua-tramo agua-der"></span>
+          <span class="agua-sube s1"></span><span class="agua-sube s2"></span><span class="agua-sube s3"></span>
+        </div>
+        <div class="inst-generacion">
+          <button type="button" class="comp comp-bdc" data-comp="bomba"><span class="comp-et">Reversible heat pump</span><strong>10 kW</strong></button>
+        </div>
+        <div class="inst-detalle" id="inst-detalle" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ESCENARIOS -->
+  <section class="seccion" aria-labelledby="t-escenarios">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">Scenarios</span>
+          <h2 id="t-escenarios">Which measures really reduce the cost</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">With the complete system running all year as the base case, I evaluated different operating and envelope measures one by one. I then combined the most effective ones in a final scenario. Costs are annual, with an average electricity price in Italy of 0.35 €/kWh.</p>
+        </div>
+      </div>
+      <div class="escenarios revelar" id="escenarios" role="list"></div>
+      <div class="esc-detalle" id="esc-detalle" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 4. RESULTADOS -->
+  <section class="seccion" aria-labelledby="t-resultados">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Analysis</span>
+        <h2 id="t-resultados" class="titulo-naranja">Main results</h2>
+      </div>
+      <div class="carrusel revelar" id="carrusel" role="region" aria-roledescription="carrusel" aria-label="HVAC simulation results">
+        <div class="carrusel-pista" id="pista" tabindex="0">
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="1 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/temp-sin-clima.webp" aria-label="Enlarge figure: Without air conditioning"><img src="../assets/hvac/temp-sin-clima.webp" alt="Hourly indoor and outdoor temperatures of the building without air conditioning over one year" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">01 / 07</span><h3>Without air conditioning</h3><p>Passive simulation of the building, with no active equipment, to understand its baseline thermal behaviour.</p><p class="clave">Indoors it reaches 45 °C in summer and drops to 9 °C in winter.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="2 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/confort-sin-clima.webp" aria-label="Enlarge figure: Baseline comfort"><img src="../assets/hvac/confort-sin-clima.webp" alt="Percentage of hours in each comfort category per zone, without air conditioning" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">02 / 07</span><h3>Baseline comfort</h3><p>Category 4, the one with the greatest discomfort, dominates in every zone. Air conditioning was essential in both seasons.</p><p class="clave">Between 60 and 65 % of hours in category 4, depending on the zone.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="3 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/temp-solo-uta.webp" aria-label="Enlarge figure: Ventilation only"><img src="../assets/hvac/temp-solo-uta.webp" alt="Hourly temperatures with the air handling unit only" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">03 / 07</span><h3>Ventilation only</h3><p>With the air handling unit and the hygienic air flow, humidity is under control, but the ventilation air is not enough to cover the sensible loads.</p><p class="clave">The maximum indoor temperature drops from 45 °C to 35 °C.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="4 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/confort-base.webp" aria-label="Enlarge figure: Complete system"><img src="../assets/hvac/confort-base.webp" alt="Percentage of hours in each comfort category per zone, with the complete system" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">04 / 07</span><h3>Complete system</h3><p>Adding the fan coils covers the sensible loads in each zone and comfort is maintained almost every hour. This validated the 10 kW size of the heat pump.</p><p class="clave">Baseline consumption of 4,869 kWh of electricity and €1,704 per year.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="5 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/confort-final.webp" aria-label="Enlarge figure: Final scenario"><img src="../assets/hvac/confort-final.webp" alt="Percentage of hours in each comfort category per zone, in the final scenario" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">05 / 07</span><h3>Final scenario</h3><p>By combining switch-off outside working hours, solar control and the heat pump, comfort during occupied hours stays within the acceptable categories.</p><p class="clave">2,729 kWh per year and a cost of €955: 44 % less than the base case.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="6 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/deshumidificacion.webp" aria-label="Enlarge figure: Dehumidification"><img src="../assets/hvac/deshumidificacion.webp" alt="Water removed from the air per month in the final scenario" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">06 / 07</span><h3>Dehumidification</h3><p>The air handling unit removes 1,878 litres of water per year. The demand is concentrated in summer, coinciding with the months of highest specific humidity.</p><p class="clave">Peak in August: 851 litres in the month and up to 53 litres in a single day.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="7 of 7">
+            <figure><button type="button" class="ampliar" data-src="../assets/hvac/consumo-final.webp" aria-label="Enlarge figure: Consumption breakdown"><img src="../assets/hvac/consumo-final.webp" alt="Breakdown of the final scenario's electricity consumption between compressor and fans" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">07 / 07</span><h3>Consumption breakdown</h3><p>In the final scenario, the heat pump compressor accounts for most of the consumption and the fans for the rest.</p><p class="clave">Compressor 2,128 kWh (78 %) and fans 602 kWh (22 %).</p></div>
+          </article>
+        </div>
+        <div class="carrusel-controles">
+          <button class="carrusel-boton" id="anterior" type="button" aria-label="Previous result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+          <button class="carrusel-boton" id="siguiente" type="button" aria-label="Next result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+          <div class="puntos" id="puntos"></div>
+          <span class="contador" id="contador" aria-live="polite">1 / 7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. NORMATIVA Y BIM -->
+  <section class="seccion" aria-labelledby="t-normativa">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">From study to project</span>
+        <h2 id="t-normativa">Regulations and BIM methodology</h2>
+      </div>
+      <div class="normativa">
+        <article class="revelar">
+          <span class="norma-tag">Applied in the study</span>
+          <h3>Design criteria</h3>
+          <p>Occupancy and ventilation according to ASHRAE 62.1, comfort assessed by thermal comfort categories, and an envelope based on the study by D’Agostino et al. (2019) for office buildings in the Mediterranean climate.</p>
+        </article>
+        <article class="revelar" style="--retraso:.08s">
+          <span class="norma-tag">In a real project in Italy</span>
+          <h3>Italian regulatory framework</h3>
+          <p>The design should be checked against the Minimum Requirements Decree (DM 26/06/2015), with energy performance calculated according to UNI/TS 11300, together with UNI EN 16798-1 for ventilation and indoor environment.</p>
+        </article>
+        <article class="revelar" style="--retraso:.16s">
+          <span class="norma-tag">Equivalent in Spain</span>
+          <h3>RITE and CTE</h3>
+          <p>In Spain, the same installation would be governed by the Regulation on Thermal Installations in Buildings (RITE) and by the Basic Energy Saving Document of the Technical Building Code (CTE DB-HE).</p>
+        </article>
+        <article class="revelar bim" style="--retraso:.24s">
+          <span class="norma-tag">Next step</span>
+          <h3>MEP installations in BIM</h3>
+          <p>The natural next step would be to transfer this installation to a BIM model to coordinate ducts, pipes and equipment with the architecture and link the model to the energy simulation. It is the methodology I want to train in next.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CONCLUSIONES -->
+  <section class="seccion" aria-labelledby="t-concl">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Conclusions</span>
+        <h2 id="t-concl">What I learned from the building</h2>
+      </div>
+      <div class="prosa">
+        <ul class="conclusiones">
+          <li class="revelar">The <strong>heat pump</strong> is essential: with electric resistance heaters the annual cost would be 3.6 times higher.</li>
+          <li class="revelar">The <strong>occupancy-based operation</strong> is the most cost-effective measure: switching the system off outside working hours cuts the cost by 30 % without losing comfort during occupied hours.</li>
+          <li class="revelar">In Palermo, <strong>solar control</strong> matters more than insulation: external shading reduces the cooling demand and the peak power, while going from 4 to 2 cm of insulation barely changes the cost.</li>
+          <li class="revelar">Combining these measures, the building reaches <strong>13.65 kWh/m² per year</strong>, in the same order of magnitude as very high efficiency buildings.</li>
+        </ul>
+        <p class="revelar gris">This is an idealised scenario: it assumes correct and consistent use of the solar shading and does not include distribution losses in pipes and ducts or the consumption of pumps and valves, which usually add between 10 and 15 % to the actual consumption.</p>
+      </div>
+      <a class="documento horizontal revelar" href="../assets/hvac/Informe_HVAC_Carlos_Molla.pdf" download>
+        <span class="doc-etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download document</span>
+        <span class="doc-marco"><img src="../assets/hvac/portada.webp" alt="Cover of the HVAC simulation report" width="680" height="880" loading="lazy"></span>
+        <span class="doc-pie"><strong>HVAC simulation report</strong><small>PDF in English, 25 pages</small></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Other projects">
+      <a href="energia.html"><span>Previous project</span><strong>Energy</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>Want to know more?</span><strong>Contact</strong></a>
+    </nav>
+  </div>
+</main>
+
+<dialog class="visor" id="visor">
+  <img id="visor-img" src="" alt="">
+  <button type="button" id="visor-cerrar">Close</button>
+</dialog>
+
+<script src="../js/en/main.js"></script>
+<script src="../js/en/carrusel.js"></script>
+<script src="../js/en/hvac.js"></script>
+</body>
+</html>

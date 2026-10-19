@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Artificial intelligence | Carlos Mollá</title>
+<meta name="description" content="Artificial intelligence projects by Carlos Mollá: a chess engine of my own with alpha-beta search, playable in the browser, and a convolutional neural network that plays Pac-Man.">
+<meta property="og:title" content="Artificial intelligence, projects by Carlos Mollá">
+<meta property="og:description" content="Play against my chess engine and see how a neural network learns to play Pac-Man.">
+<meta property="og:image" content="../assets/ia/ajedrez-poster.jpg">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="es" href="../ia.html">
+<link rel="alternate" hreflang="en" href="ia.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body class="pag-proyecto">
+<a class="saltar" href="#contenido">Skip to content</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html"><span class="ini">C</span>arlos <span class="ini">M</span>ollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Sections">
+      <ul id="pestanas">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="energia.html">Energy</a></li>
+        <li><a href="hvac.html">HVAC</a></li>
+        <li><a href="ia.html" aria-current="page">AI</a></li>
+        <li><a href="sostenibilidad.html">Sustainability</a></li>
+        <li><a href="index.html#contacto">Contact</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+    <div class="idioma" role="group" aria-label="Language"><a href="../ia.html" hreflang="es" lang="es" title="Español">ES</a><a href="ia.html" hreflang="en" lang="en" aria-current="true" title="English">EN</a></div>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla una-col">
+      <div class="herr-pagina" aria-label="Tools used"><span>Tools</span><ul><li>Python</li><li>PyTorch</li><li>NumPy</li><li>Generative AI</li></ul></div>
+      <div class="proyecto-texto">
+        <h1 id="titulo">Artificial intelligence</h1>
+        <p class="entrada">Taking <em>Introduction to Artificial Intelligence</em> at the University of Liège sparked my curiosity about how artificial intelligence makes decisions from data. In that course I trained a neural network that plays Pac-Man; afterwards I wanted to go one step further and build my own AI from scratch: a chess engine.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÍNDICE DE PROYECTOS -->
+  <nav class="seccion indice-seccion" aria-label="Projects on this page">
+    <div class="envoltura indice">
+        <a class="indice-proy con-video revelar" href="#pacman">
+          <span class="ip-video"><video autoplay muted loop playsinline preload="metadata" poster="../assets/ia/pacman-poster-en.jpg" aria-label="Real games played by the trained neural network"><source src="../assets/ia/pacman-agente-en.webm" type="video/webm"><source src="../assets/ia/pacman-agente-en.mp4" type="video/mp4"></video></span>
+          <span class="ip-num">Project 01</span>
+          <strong>Neural network for Pac-Man</strong>
+          <span class="ip-ctx">Introduction to Artificial Intelligence, University of Liège</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+        <a class="indice-proy con-video revelar" href="#ajedrez" style="--retraso:.08s">
+          <span class="ip-video"><video autoplay muted loop playsinline preload="metadata" poster="../assets/ia/ajedrez-poster.jpg" aria-label="Game against the chess engine at Grandmaster level"><source src="../assets/ia/ajedrez-partida.webm" type="video/webm"><source src="../assets/ia/ajedrez-partida.mp4" type="video/mp4"></video></span>
+          <span class="ip-num">Project 02</span>
+          <strong>Chess engine</strong>
+          <span class="ip-ctx">Personal project</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+    </div>
+  </nav>
+
+
+  <!-- ===================== PAC-MAN ===================== -->
+  <section class="seccion proyecto-banda" id="pacman" aria-labelledby="t-pacman">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="banda-num">Project 01</span>
+          <h2 id="t-pacman">Neural network for Pac-Man</h2>
+          <p class="banda-ctx">Introduction to Artificial Intelligence, University of Liège</p>
+        </div>
+        <div class="prosa">
+          <p class="revelar">I used PyTorch to train a convolutional neural network that learns to play Pac-Man from examples, with no programmed rules. Starting from 15,018 game situations, each with the state of the board and the action taken, the network learns to choose the best move: this is supervised learning.</p>
+          <p class="revelar">The video shows real games played by the trained network in mazes that were not part of the training set. It completes each level while dodging the ghost, which shows its ability to generalise.</p>
+          <p class="revelar">It is the same principle behind generative AI models such as ChatGPT or Claude: a neural network is not given rules but a large number of examples, and it adjusts its parameters to reduce the error of its predictions. My network learns which move to make from games; a language model learns which word comes next from texts. The scale is very different, but the training logic is the same.</p>
+        </div>
+      </div>
+      <figure class="video-pacman revelar">
+        <video autoplay muted loop playsinline aria-label="Real games played by the trained neural network in mazes it did not see during training">
+          <source src="../assets/ia/pacman-agente-en.webm" type="video/webm">
+          <source src="../assets/ia/pacman-agente-en.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Arquitectura -->
+  <section class="seccion" aria-labelledby="t-red">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Architecture</span>
+        <h2 id="t-red" class="titulo-naranja">How the neural network works</h2>
+      </div>
+      <figure class="red3d revelar" id="red3d">
+        <div class="red3d-lienzo"><svg id="red3d-svg" viewBox="0 0 1120 400" role="img" aria-labelledby="red3d-t"><title id="red3d-t">Network architecture: an input of 6 layers of 8 by 16 cells, three convolutional layers of 16, 32 and 64 filters that scan the board, and dense layers of 512, 128 and 50 neurons ending in 5 possible moves</title></svg></div>
+      </figure>
+      <div class="lista-ventajas red-datos">
+        <div class="revelar"><strong>4.3 million parameters</strong><span>The filter (convolutional) layers detect local patterns, such as a ghost near a corridor. The fully connected layers of neurons combine that information and choose between north, south, east, west or stop.</span></div>
+        <div class="revelar" style="--retraso:.08s"><strong>Training</strong><span>Cross-entropy as the loss function, AdamW optimiser, 30 epochs and batches of 64 examples.</span></div>
+      </div>
+      <div class="ia-aplicacion revelar">
+        <span class="antetitulo">Beyond the game</span>
+        <p>This same process is the one applied in engineering data analysis: preparing and encoding the data properly, training a model, validating it on cases it has not seen and measuring its results. That is what I want to apply to real problems, such as forecasting energy demand or detecting anomalies in the operation of an installation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== AJEDREZ ===================== -->
+  <section class="seccion proyecto-banda" id="ajedrez" aria-labelledby="t-ajedrez">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="banda-num">Project 02</span>
+          <h2 id="t-ajedrez">Chess engine</h2>
+          <p class="banda-ctx">Personal project</p>
+        </div>
+        <div class="prosa">
+          <p class="revelar">After the course I wanted to find out whether I could design a complete AI on my own. I chose chess because it is a game I have always loved and because it is a classic decision-making problem: there are too many possible moves to analyse them all, so the AI has to decide what to calculate and what to discard.</p>
+          <p class="revelar">I approached it as an engineering project: defining the problem, choosing the algorithm, measuring its performance and debugging until I had a product anyone can use.</p>
+        </div>
+      </div>
+
+      <div class="juego revelar" id="jugar">
+        <div class="juego-pantalla" id="juego-pantalla">
+          <img src="../assets/ia/ajedrez-poster.jpg" alt="" class="juego-fondo" width="660" height="480">
+          <div class="juego-invitacion">
+            <button type="button" class="boton principal" id="juego-cargar">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              Play against the AI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cómo decide: alfa-beta -->
+  <section class="seccion" id="alfabeta" aria-labelledby="t-alfabeta">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">How it decides</span>
+          <h2 id="t-alfabeta">Alpha-beta pruning search</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">To choose a move, the AI analyses its options, the opponent's replies and its own counter-replies, and picks the one that guarantees the best outcome even if the opponent plays well.</p>
+          <p class="revelar">The challenge is that the number of positions grows exponentially. <strong>Alpha-beta pruning</strong> discards the branches that can no longer change the decision, and the time saved is spent calculating more moves ahead. It is the same idea as in any optimisation problem: do not evaluate alternatives we already know will not win.</p>
+        </div>
+      </div>
+      <div class="arbol revelar" id="arbol">
+        <div class="arbol-lienzo">
+          <svg id="arbol-svg" viewBox="0 0 640 300" role="img" aria-labelledby="arbol-t">
+            <title id="arbol-t">Three-level search tree with eight final positions. With alpha-beta pruning only five of the eight are evaluated.</title>
+          </svg>
+        </div>
+        <div class="arbol-paso">
+          <p class="arbol-num" id="arbol-num">Step 1 of 9</p>
+          <h3 id="arbol-titulo"></h3>
+          <p id="arbol-texto" aria-live="polite"></p>
+        </div>
+        <div class="arbol-pie">
+          <div class="arbol-nav">
+            <button type="button" class="bat-boton" id="arbol-ant" aria-label="Previous step">← Previous</button>
+            <div class="arbol-puntos" id="arbol-puntos" aria-hidden="true"></div>
+            <button type="button" class="boton principal arbol-sig" id="arbol-sig" aria-label="Next step">Next →</button>
+          </div>
+          <p class="arbol-contador"><strong id="arbol-n">0</strong> of 8 positions evaluated</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Evaluación -->
+  <section class="seccion" aria-labelledby="t-eval">
+    <div class="envoltura dos-col">
+      <div class="prosa">
+        <span class="antetitulo revelar">The evaluation</span>
+        <h2 id="t-eval" class="revelar">Each piece is worth more on some squares than on others</h2>
+        <p class="revelar">When the search reaches a final position, the AI scores it: it adds up each side's material plus a bonus depending on the square each piece occupies. A knight in the centre controls eight squares; in a corner, only two.</p>
+        <p class="revelar">I use piece-square tables based on the well-known “Simplified Evaluation Function”, in hundredths of a pawn. Select a piece to see its map.</p>
+        <div class="estaciones revelar" role="group" aria-label="Piece" id="pst-piezas">
+          <button type="button" class="estacion" data-pieza="caballo" aria-pressed="true">Knight</button>
+          <button type="button" class="estacion" data-pieza="alfil" aria-pressed="false">Bishop</button>
+          <button type="button" class="estacion" data-pieza="peon" aria-pressed="false">Pawn</button>
+          <button type="button" class="estacion" data-pieza="rey" aria-pressed="false">King</button>
+        </div>
+      </div>
+      <div class="pst revelar">
+        <div class="pst-tablero" id="pst-tablero" role="grid" aria-label="Bonus by square"></div>
+        <div class="pst-escala" aria-hidden="true"><span>Penalty</span><i></i><span>Bonus</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Other projects">
+      <a href="hvac.html"><span>Previous project</span><strong>HVAC</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>Want to know more?</span><strong>Contact</strong></a>
+    </nav>
+  </div>
+</main>
+
+<script>window.PAC_ESTADO = {"W": 16, "H": 8, "walls": [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], "pac": [5, 1], "ghosts": [[6.0, 2.0, 0]], "food": [[8, 2], [10, 2], [14, 3]], "caps": [[4, 2], [9, 5]], "dir": "West", "asustado": [[7.5, 1.0, 37]], "pac2": [6, 2]};</script>
+<script src="../js/en/main.js"></script>
+<script src="../js/en/ia.js"></script>
+</body>
+</html>

@@ -1032,3 +1032,15 @@ figure.ruptura { margin-left: 0; margin-right: 0; }
 .r3-grupo { fill: var(--gris); font: 500 12px var(--f-texto); letter-spacing: .04em; }
 .r3-mov { fill: var(--gris); font: 400 12px var(--f-texto); transition: fill .3s; }
 .r3-mov.activo { fill: var(--naranja-texto); font-weight: 600; }
+
+/* Selector de idioma ES / EN */
+.idioma { display: inline-flex; flex: none; border: 1px solid var(--linea); border-radius: 999px; padding: 2px; gap: 2px; font-size: .72rem; font-weight: 600; letter-spacing: .06em; }
+.idioma a { padding: .28rem .55rem; border-radius: 999px; text-decoration: none; color: var(--gris, #5B6577); line-height: 1; transition: background .2s, color .2s; }
+.idioma a:hover { color: var(--negro); }
+.idioma a[aria-current="true"] { background: var(--marino); color: #fff; }
+@media (max-width: 760px) {
+  .cabecera .envoltura { position: relative; }
+  .idioma { position: absolute; right: 16px; top: .7rem; }
+}
+html[lang="en"] .documento.horizontal::after { content: "Download PDF"; }
+html[lang="en"] .pestanas a.pronto::after { content: "soon"; }

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CO₂ Carnot Batteries | Carlos Mollá</title>
+<meta name="description" content="My Master's thesis at the University of Liège: analysis of a transcritical CO₂ power cycle for the discharge of a Carnot battery.">
+<meta property="og:title" content="CO₂ Carnot Batteries, Master's thesis by Carlos Mollá">
+<meta property="og:description" content="Storing surplus renewable energy as heat and returning it to the grid with a transcritical CO₂ cycle.">
+<meta property="og:image" content="../assets/energia/mapa-eficiencia.webp">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="es" href="../energia.html">
+<link rel="alternate" hreflang="en" href="energia.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body class="pag-proyecto">
+<a class="saltar" href="#contenido">Skip to content</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html"><span class="ini">C</span>arlos <span class="ini">M</span>ollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Sections">
+      <ul id="pestanas">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="energia.html" aria-current="page">Energy</a></li>
+        <li><a href="hvac.html">HVAC</a></li>
+        <li><a href="ia.html">AI</a></li>
+        <li><a href="sostenibilidad.html">Sustainability</a></li>
+        <li><a href="index.html#contacto">Contact</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+    <div class="idioma" role="group" aria-label="Language"><a href="../energia.html" hreflang="es" lang="es" title="Español">ES</a><a href="energia.html" hreflang="en" lang="en" aria-current="true" title="English">EN</a></div>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA DE LA PÁGINA -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla">
+      <div class="herr-pagina" aria-label="Tools used"><span>Tools</span><ul><li>Python</li><li>CoolProp</li><li>LaboThApPy</li><li>Streamlit</li><li>Pandas</li><li>Matplotlib</li><li>Generative AI</li></ul></div>
+      <div class="proyecto-texto">
+      <h1 id="titulo">Energy</h1>
+      <p class="entrada">The energy transition requires producing renewable energy, storing it when there is a surplus and managing it when there is a shortfall. On this page I present two projects that tackle this challenge from different angles: storing surplus renewable energy in Carnot batteries and how the electricity market works.</p>
+      </div>
+      <figure class="mini-planta" aria-labelledby="mp-titulo">
+        <svg id="mp" viewBox="0 0 460 330" role="img" aria-labelledby="mp-titulo mp-desc">
+          <title id="mp-titulo">Simplified model of a Carnot battery</title>
+          <desc id="mp-desc">Renewable generation varies over time. When there is a surplus, the energy is stored as heat in a tank; when generation drops, the discharge cycle turns that heat into electricity and delivers it to the grid.</desc>
+          <defs>
+            <linearGradient id="mp-cal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F29A4A"/><stop offset="1" stop-color="#D9661A"/></linearGradient>
+            <clipPath id="mp-clip"><rect x="196" y="96" width="68" height="118" rx="10"/></clipPath>
+          </defs>
+          <!-- tuberías -->
+          <path id="mp-t1" class="mp-tubo" d="M112 160 H190"/>
+          <path id="mp-t2" class="mp-tubo" d="M270 160 H306"/>
+          <g id="mp-part1"></g><g id="mp-part2"></g>
+          <!-- 1. generación renovable -->
+          <g class="mp-sol" id="mp-sol"><circle cx="40" cy="62" r="13"/><g id="mp-rayos"><path d="M40 40v-7M40 91v-7M18 62h-7M69 62h-7M24.5 46.5l-5-5M60.5 82.5l-5-5M24.5 77.5l-5 5M60.5 41.5l-5 5"/></g></g>
+          <line x1="80" y1="208" x2="80" y2="104" class="mp-torre"/>
+          <g id="mp-aspas" class="mp-aspas"><path d="M80 100 L77 64 L80 58 L83 64 Z"/><path d="M80 100 L77 64 L80 58 L83 64 Z" transform="rotate(120 80 100)"/><path d="M80 100 L77 64 L80 58 L83 64 Z" transform="rotate(240 80 100)"/><circle cx="80" cy="100" r="4.5"/></g>
+          <!-- 2. almacenamiento -->
+          <rect x="196" y="96" width="68" height="118" rx="10" class="mp-deposito"/>
+          <g clip-path="url(#mp-clip)"><path id="mp-liquido" fill="url(#mp-cal)" d=""/></g>
+          <rect x="196" y="96" width="68" height="118" rx="10" class="mp-borde"/>
+          <!-- 3. descarga: turbina + generador -->
+          <rect id="mp-rayo" x="404" y="134" width="56" height="52" rx="16" class="mp-pulso"/>
+          <line x1="370" y1="160" x2="416" y2="160" class="mp-arbol"/>
+          <circle cx="344" cy="160" r="33" class="mp-maquina"/>
+          <circle cx="344" cy="160" r="26.5" class="mp-aro"/>
+          <g id="mp-rotor" class="mp-rotor"><path d="M344 160 C354 154 358 143 354 131" transform="rotate(0 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(60 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(120 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(180 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(240 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(300 344 160)"/></g>
+          <circle cx="344" cy="160" r="6.5" class="mp-eje"/>
+          <rect x="410" y="140" width="44" height="40" rx="11" class="mp-generador"/>
+          <path d="M435.5 146 L424.5 162.5 H432 L428.5 174 L440 157 H432.5 Z" class="mp-chispa"/>
+          <!-- etiquetas -->
+          <text class="mp-et" x="66" y="236" text-anchor="middle">Renewable</text>
+          <text class="mp-et" x="66" y="253" text-anchor="middle">generation</text>
+          <text class="mp-et" x="230" y="236" text-anchor="middle">Thermal</text>
+          <text class="mp-et" x="230" y="253" text-anchor="middle">storage</text>
+          <text class="mp-et" x="382" y="236" text-anchor="middle">Discharge</text>
+          <text class="mp-et" x="382" y="253" text-anchor="middle">(CO₂ cycle)</text>
+          <!-- medidores -->
+          <g class="mp-medidor"><rect x="26" y="272" width="80" height="6" rx="3" class="mp-fondo"/><rect id="mp-m1" x="26" y="272" width="40" height="6" rx="3" class="mp-val-ren"/><text x="66" y="298" text-anchor="middle" class="mp-num" id="mp-n1">50 %</text></g>
+          <g class="mp-medidor"><rect x="190" y="272" width="80" height="6" rx="3" class="mp-fondo"/><rect id="mp-m2" x="190" y="272" width="40" height="6" rx="3" class="mp-val-cal"/><text x="230" y="298" text-anchor="middle" class="mp-num" id="mp-n2">50 %</text></g>
+          <g class="mp-medidor"><rect x="342" y="272" width="80" height="6" rx="3" class="mp-fondo"/><rect id="mp-m3" x="342" y="272" width="0" height="6" rx="3" class="mp-val-red"/><text x="382" y="298" text-anchor="middle" class="mp-num" id="mp-n3">0 %</text></g>
+          <text class="mp-pie" x="66" y="316" text-anchor="middle">production</text>
+          <text class="mp-pie" x="230" y="316" text-anchor="middle">tank charging</text>
+          <text class="mp-pie" x="382" y="316" text-anchor="middle">delivery to the grid</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ÍNDICE DE PROYECTOS -->
+  <nav class="seccion indice-seccion" aria-label="Projects on this page">
+    <div class="envoltura indice">
+        <a class="indice-proy revelar" href="#tfm">
+          <span class="ip-num">Project 01</span>
+          <strong>CO₂ Carnot Batteries</strong>
+          <span class="ip-ctx">Master's thesis, University of Liège</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+        <a class="indice-proy revelar" href="#mercado" style="--retraso:.08s">
+          <span class="ip-num">Project 02</span>
+          <strong>Electricity market simulator</strong>
+          <span class="ip-ctx">Personal project</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+    </div>
+  </nav>
+
+
+  <!-- ===================== PROYECTO 01: TFM ===================== -->
+  <section class="seccion proyecto-banda" id="tfm" aria-labelledby="t-tfm">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="banda-num">Project 01</span>
+        <h2 id="t-tfm">CO₂ Carnot Batteries</h2>
+        <p class="banda-ctx">Master's thesis, University of Liège</p>
+      </div>
+      <div class="prosa">
+        <p class="revelar">Storing surplus renewable energy as heat and converting it back into electricity. My work focused on the discharge stage: a transcritical CO₂ power cycle that I modelled, optimised and analysed in Python, and defended in English in June 2026.</p>
+        <p class="original revelar">“Part-Load Performance Analysis of a Transcritical CO₂ Low-Temperature Power Cycle”</p>
+        <ul class="datos revelar">
+        <li><strong>20.3 %</strong><span>maximum net cycle efficiency</span></li>
+        <li><strong>10 MW</strong><span>net design power</span></li>
+        <li><strong>130–200 °C</strong><span>hot source temperatures studied</span></li>
+      </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. EL PROBLEMA -->
+  <section class="seccion" aria-labelledby="t-problema">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">The problem</span>
+          <h2 id="t-problema">The high intermittency of renewables</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Solar and wind generation depends on the weather, not on demand. This creates mismatches between production and consumption: at peak generation hours there are surpluses that, without storage capacity, have to be curtailed, while in low-production periods the power system has to rely on backup technologies.</p>
+          <p class="revelar">Energy storage is therefore a key piece of the energy transition. According to the International Energy Agency (IEA), around 235 GW of storage was installed worldwide at the end of 2023, while reaching the net zero emissions scenario would require 1,500 GW by 2030.</p>
+          <p class="revelar">Carnot batteries are a long-duration energy storage (LDES) solution: they convert electricity into heat, store it in thermal tanks and turn it back into electricity when the grid needs it, without relying on critical raw materials such as lithium.</p>
+        </div>
+      </div>
+
+      <!-- Animación -->
+      <div class="bateria revelar" id="bateria" aria-labelledby="t-animacion">
+        <h3 id="t-animacion" class="sr-only">Animation: one day of a Carnot battery</h3>
+        <div class="bat-cabeza">
+          <div class="bat-estado">
+            <span class="bat-hora" id="bat-hora" aria-hidden="true">12:00</span>
+            <span class="bat-modo" id="bat-modo" data-modo="carga" aria-live="polite">Renewable surplus: charging</span>
+          </div>
+          <button class="bat-boton" id="bat-boton" type="button" aria-pressed="false">Pause</button>
+        </div>
+        <div class="bat-grafica">
+          <svg id="bat-svg" viewBox="0 0 480 170" role="img" aria-labelledby="bat-svg-t">
+            <title id="bat-svg-t">Renewable generation and demand over one day</title>
+            <g id="bat-rejilla"></g>
+            <path class="gen" id="bat-gen" d=""/>
+            <path class="exc" id="bat-exc" d=""/>
+            <path class="dem" id="bat-dem" d=""/>
+            <line class="cursor" id="bat-cursor" x1="0" x2="0" y1="10" y2="140"/>
+            <g id="bat-ejes"></g>
+          </svg>
+          <div class="leyenda">
+            <span><i style="background:rgba(232,130,42,.25);border:1.5px solid var(--naranja)"></i>Renewable generation</span>
+            <span><i style="background:rgba(232,130,42,.5)"></i>Surplus that is stored</span>
+            <span><i style="background:none;border-top:2px dashed var(--marino);height:0;margin-bottom:3px"></i>Demand</span>
+          </div>
+        </div>
+
+        <div class="flujo">
+          <div class="nodo" id="n-ren">
+            <svg viewBox="0 0 36 36" fill="none" stroke="var(--naranja)" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="18" r="6"/><path d="M18 3v4M18 29v4M3 18h4M29 18h4M7.4 7.4l2.8 2.8M25.8 25.8l2.8 2.8M7.4 28.6l2.8-2.8M25.8 10.2l2.8-2.8"/></svg>
+            <strong style="font-size:1.25rem">Renewables</strong>
+            <small>Solar and wind</small>
+          </div>
+          <div class="flecha" id="f-1" aria-hidden="true"></div>
+          <div class="nodo" id="n-p2h">
+            <span class="fase">Charging</span>
+            <strong>P2H</strong>
+            <small>Heat pump: electricity → heat</small>
+          </div>
+          <div class="flecha" id="f-2" aria-hidden="true"></div>
+          <div class="nodo" id="n-h">
+            <div class="depositos" aria-hidden="true">
+              <div><div class="deposito caliente"><span id="dep-cal"></span></div><span class="deposito-et">Hot</span></div>
+              <div><div class="deposito frio"><span id="dep-fri"></span></div><span class="deposito-et">Cold</span></div>
+            </div>
+            <span class="fase">Thermal</span>
+            <strong>H</strong>
+            <small>Pressurised water, 70–170 °C</small>
+          </div>
+          <div class="flecha descarga" id="f-3" aria-hidden="true"></div>
+          <div class="nodo tfm" id="n-h2p">
+            <span class="sello">My thesis</span>
+            <span class="fase">Discharge</span>
+            <strong>H2P</strong>
+            <small>Transcritical CO₂ cycle: heat → electricity</small>
+          </div>
+          <div class="flecha descarga" id="f-4" aria-hidden="true"></div>
+          <div class="nodo" id="n-red">
+            <svg viewBox="0 0 36 36" fill="none" stroke="var(--marino)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 3 11 33M18 3l7 30M12 11h12M10 19h16M8.5 27h19M13 11l10 8M23 11l-10 8"/></svg>
+            <strong style="font-size:1.25rem">Grid</strong>
+            <small>End use</small>
+          </div>
+        </div>
+        <p class="nota">Illustrative diagram. The generation and demand profiles are indicative and do not come from the thesis.</p>
+      </div>
+
+      <ul class="lista-ventajas" style="margin-top:clamp(2.5rem,5vw,3.5rem)">
+        <li class="revelar"><strong>No critical raw materials</strong><span>It uses abundant, non-toxic storage media such as water, molten salts or rocks instead of lithium or cobalt.</span></li>
+        <li class="revelar" style="--retraso:.08s"><strong>Flexible siting</strong><span>Unlike pumped hydro, it does not require specific geographical conditions.</span></li>
+        <li class="revelar"><strong>Long service life</strong><span>Around 20 years, compared with less than 10 for most electrochemical batteries, since it does not depend on chemical reactions.</span></li>
+        <li class="revelar" style="--retraso:.08s"><strong>Sector coupling</strong><span>By storing thermal energy, it can supply electricity and useful heat at the same time, for example to district heating networks.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. EL CICLO -->
+  <section class="seccion" aria-labelledby="t-ciclo">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">The discharge</span>
+        <h2 id="t-ciclo" class="titulo-naranja">The transcritical power cycle</h2>
+      </div>
+      <div class="ciclo-bloque">
+        <figure class="diagrama revelar" id="diagrama">
+          <svg viewBox="0 0 520 390" role="group" aria-labelledby="diag-titulo diag-desc">
+          <title id="diag-titulo">Transcritical CO₂ cycle on a temperature–entropy diagram</title>
+          <desc id="diag-desc">Transcritical CO₂ power cycle (Carnot battery discharge). Four states: pumping, supercritical heating up to about 100 °C, expansion and condensation at about 10 °C, drawn on the CO₂ saturation dome (critical point at 31 °C), together with the hot source, which cools down along the heater, and the cold source, at constant temperature.</desc>
+          <g class="rejilla" aria-hidden="true">
+            <line x1="64" x2="500" y1="43.4" y2="43.4"/><line x1="64" x2="500" y1="140.5" y2="140.5"/>
+            <line x1="64" x2="500" y1="237.5" y2="237.5"/><line x1="64" x2="500" y1="334.6" y2="334.6"/>
+            <line x1="89.6" x2="89.6" y1="24" y2="354"/><line x1="192.2" x2="192.2" y1="24" y2="354"/>
+            <line x1="294.8" x2="294.8" y1="24" y2="354"/><line x1="397.4" x2="397.4" y1="24" y2="354"/>
+            <line x1="500" x2="500" y1="24" y2="354"/>
+          </g>
+          <g aria-hidden="true">
+            <text class="eje" x="54" y="47.4" text-anchor="end">100</text>
+            <text class="eje" x="54" y="144.5" text-anchor="end">50</text>
+            <text class="eje" x="54" y="241.5" text-anchor="end">0</text>
+            <text class="eje" x="54" y="338.6" text-anchor="end">−50</text>
+            <text class="eje" x="89.6" y="372" text-anchor="middle">0.6</text>
+            <text class="eje" x="192.2" y="372" text-anchor="middle">1.0</text>
+            <text class="eje" x="294.8" y="372" text-anchor="middle">1.4</text>
+            <text class="eje" x="397.4" y="372" text-anchor="middle">1.8</text>
+            <text class="eje" x="500" y="372" text-anchor="middle">2.2</text>
+            <text class="eje-titulo" x="282" y="390" text-anchor="middle">Entropy s [kJ/(kg·K)]</text>
+            <text class="eje-titulo" x="14" y="16">T [°C]</text>
+            <line class="critico" x1="64" x2="500" y1="177.4" y2="177.4"/>
+            <text class="eje" x="70" y="171">Critical T = 31 °C</text>
+          </g>
+          <path class="campana" d="M69.1 348.2 C75.1 342.7 93.0 326.2 105.0 315.2 C117.0 304.2 129.8 292.2 140.9 282.2 C152.0 272.2 163.1 263.4 171.7 255.0 C180.2 246.6 184.5 239.1 192.2 231.7 C199.9 224.3 208.5 217.2 217.9 210.4 C227.3 203.6 239.3 195.9 248.7 190.9 C258.1 185.9 266.2 182.6 274.3 180.3 C282.4 178.1 289.7 177.6 297.4 177.4 C305.1 177.2 312.4 177.7 320.5 179.3 C328.6 180.9 337.6 183.4 346.1 187.1 C354.7 190.8 363.2 195.9 371.8 201.6 C380.4 207.3 388.8 214.9 397.4 221.2 C405.9 227.5 414.6 233.2 423.1 239.5 C431.7 245.8 441.0 249.5 448.7 258.9 C456.4 268.3 463.2 280.9 469.2 295.8 C475.2 310.7 482.0 339.5 484.6 348.2"/>
+          <g class="fuentes" aria-hidden="true">
+            <defs><marker id="punta-cal" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#D2463C"/></marker>
+            <marker id="punta-fri" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#3E78B3"/></marker></defs>
+            <path class="fuente-cal" d="M392.3 22.1 L217 179.3" marker-end="url(#punta-cal)"/>
+            <text class="et-cal" x="262" y="108" transform="rotate(-41.9 262 108)">Hot source</text>
+            <path class="fuente-fri" d="M197.4 239.5 L435.9 239.5" marker-end="url(#punta-fri)"/>
+            <text class="et-fri" x="316" y="258" text-anchor="middle">Cold source</text>
+          </g>
+          <path class="ciclo" d="M202 227 L206.3 207.8 C209.1 204.7 214.7 197.6 223.0 189.0 C231.3 180.4 242.3 165.7 256.4 156.0 C270.5 146.3 292.7 138.9 307.6 130.8 C322.6 122.7 334.1 116.6 346.1 107.5 C358.1 98.4 370.4 88.4 379.5 76.4 C388.6 64.4 397.4 42.4 401.0 35.6 L408.7 200.8 L392.3 217.7 L211.5 217.7 Z"/>
+          <g class="tramos" aria-hidden="true">
+            <path class="tramo" data-tramo="0" pathLength="1" d="M202 227 L206.3 207.8"/>
+            <path class="tramo" data-tramo="1" pathLength="1" d="M206.3 207.8 C209.1 204.7 214.7 197.6 223.0 189.0 C231.3 180.4 242.3 165.7 256.4 156.0 C270.5 146.3 292.7 138.9 307.6 130.8 C322.6 122.7 334.1 116.6 346.1 107.5 C358.1 98.4 370.4 88.4 379.5 76.4 C388.6 64.4 397.4 42.4 401.0 35.6"/>
+            <path class="tramo" data-tramo="2" pathLength="1" d="M401 35.6 L408.7 200.8"/>
+            <path class="tramo" data-tramo="3" pathLength="1" d="M408.7 200.8 L392.3 217.7 L211.5 217.7 L202 227"/>
+          </g>
+          <g class="estado" data-paso="0" tabindex="0" role="button" aria-label="State 1: pumping">
+            <circle class="aura" cx="202" cy="227" r="16"/><circle class="punto" cx="202" cy="227" r="6.5"/>
+            <text x="182" y="222">1</text>
+          </g>
+          <g class="estado" data-paso="1" tabindex="0" role="button" aria-label="State 2: heating">
+            <circle class="aura" cx="206.3" cy="207.8" r="16"/><circle class="punto" cx="206.3" cy="207.8" r="6.5"/>
+            <text x="186" y="203">2</text>
+          </g>
+          <g class="estado" data-paso="2" tabindex="0" role="button" aria-label="State 3: expansion">
+            <circle class="aura" cx="401" cy="35.6" r="16"/><circle class="punto" cx="401" cy="35.6" r="6.5"/>
+            <text x="414" y="32">3</text>
+          </g>
+          <g class="estado" data-paso="3" tabindex="0" role="button" aria-label="State 4: condensation">
+            <circle class="aura" cx="408.7" cy="200.8" r="16"/><circle class="punto" cx="408.7" cy="200.8" r="6.5"/>
+            <text x="422" y="197">4</text>
+          </g>
+        </svg>
+        </figure>
+        <div class="prosa">
+          <p class="revelar">In the discharge stage, the CO₂ follows a transcritical Rankine cycle: it operates above its critical point (31.1 °C and 73.8 bar) on the high-pressure side and below it on the low-pressure side. Selecting each stage highlights its path on the diagram.</p>
+          <ol class="pasos-ciclo revelar" id="pasos">
+            <li tabindex="0" data-paso="0"><strong>1 → 2  Pumping</strong><span>The pump raises the pressure of the liquid CO₂ above its critical pressure.</span></li>
+            <li tabindex="0" data-paso="1"><strong>2 → 3  Heating</strong><span>The CO₂ is preheated in the recuperator and absorbs heat from the hot source in a supercritical state, with no phase change.</span></li>
+            <li tabindex="0" data-paso="2"><strong>3 → 4  Expansion</strong><span>The fluid expands in the turbine, which drives the generator and returns the energy to the grid.</span></li>
+            <li tabindex="0" data-paso="3"><strong>4 → 1  Condensation</strong><span>After giving off heat in the recuperator, the CO₂ condenses against the cold source and returns to the pump inlet.</span></li>
+          </ol>
+        </div>
+      </div>
+      <h3 class="subtitulo-naranja revelar">Advantages of the transcritical CO₂ cycle</h3>
+      <div class="por-que">
+        <div class="revelar"><strong>Thermal matching</strong><span>In the supercritical state, the CO₂ heats up with a temperature glide that matches that of the source, which reduces exergy destruction in the heat exchange.</span></div>
+        <div class="revelar" style="--retraso:.06s"><strong>Compact equipment</strong><span>The high density of CO₂ near the critical point makes it possible to reduce the size of the turbomachinery and heat exchangers.</span></div>
+        <div class="revelar" style="--retraso:.12s"><strong>Pumping instead of compression</strong><span>Since the fluid is pressurised in the liquid phase, the work required is much lower than that of a compressor.</span></div>
+        <div class="revelar" style="--retraso:.18s"><strong>Safe and sustainable fluid</strong><span>It is non-flammable and non-toxic at moderate concentrations, with zero ozone depletion potential and a global warming potential (GWP) of 1.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CÓMO LO HICE -->
+  <section class="seccion" aria-labelledby="t-metodo">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Methodology</span>
+        <h2 id="t-metodo">From the model to the control strategy</h2>
+      </div>
+      <ol class="metodo">
+        <li class="revelar"><h3>Cycle model</h3><p>I developed in Python a steady-state model of the recuperated cycle, using the University of Liège's LaboThApPy library and CoolProp for the CO₂ properties. The heat exchangers were discretised to capture the strong non-linearity of the specific heat near the critical point.</p></li>
+        <li class="revelar" style="--retraso:.08s"><h3>Design optimisation</h3><p>Using a particle swarm optimisation (PSO) algorithm, I identified, for each pair of hot (130–200 °C) and cold (0.1–20 °C) source temperatures, the operating point with maximum net efficiency, at a fixed net power of 10 MW.</p></li>
+        <li class="revelar" style="--retraso:.16s"><h3>Off-design analysis</h3><p>With the equipment geometry fixed at the design point, I analysed the cycle's response to ±15 % variations in pump and expander speeds and to changes in boundary conditions. Based on this, I proposed a structure of controlled and manipulated variables.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. RESULTADOS -->
+  <section class="seccion" aria-labelledby="t-resultados">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Analysis</span>
+        <h2 id="t-resultados" class="titulo-naranja">Main results</h2>
+      </div>
+      <div class="carrusel revelar" id="carrusel" role="region" aria-roledescription="carrusel" aria-label="Thesis results">
+        <div class="carrusel-pista" id="pista" tabindex="0">
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="1 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/mapa-eficiencia.webp" aria-label="Enlarge figure: Net cycle efficiency"><img src="../assets/energia/mapa-eficiencia.webp" alt="Map of net cycle efficiency as a function of the hot and cold source temperatures" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">01 / 08</span><h3>Net cycle efficiency</h3><p>Efficiency increases with the hot source temperature and decreases with the cold source temperature. The global optimum lies in the most favourable corner: 200 °C and 0.1 °C.</p><p class="clave">20.3 % maximum net efficiency, around 48 % of the Carnot limit.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="2 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/mapa-presion.webp" aria-label="Enlarge figure: Optimal high-side pressure"><img src="../assets/energia/mapa-presion.webp" alt="Map of the optimal high-side pressure" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">02 / 08</span><h3>Optimal high-side pressure</h3><p>For each pair of temperatures there is an optimal pressure. Raising it improves the thermal matching with the hot source, but increases the pumping work.</p><p class="clave">From about 145 bar at 130 °C to about 230 bar at 200 °C.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="3 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/mapa-caudal-co2.webp" aria-label="Enlarge figure: CO₂ mass flow rate"><img src="../assets/energia/mapa-caudal-co2.webp" alt="Map of the optimal CO2 mass flow rate" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">03 / 08</span><h3>CO₂ mass flow rate</h3><p>To maintain a constant net power of 10 MW, the required flow rate varies significantly with the boundary conditions. This range defines the turndown capability required of the pump.</p><p class="clave">From 161 kg/s at the optimum to about 465 kg/s in the worst case: a factor of three.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="4 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/mapa-caudal-fuente.webp" aria-label="Enlarge figure: Hot source flow rate"><img src="../assets/energia/mapa-caudal-fuente.webp" alt="Map of the optimal hot source flow rate" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">04 / 08</span><h3>Hot source flow rate</h3><p>The higher the hot source temperature, the lower the flow rate needed to supply the same heat. Modulating it makes it possible to regulate the thermal energy entering the cycle.</p><p class="clave">From about 80 to 350 kg/s: a factor of 4.4.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="5 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/fuera-diseno-nominal.webp" aria-label="Enlarge figure: Off-design: actuator authority"><img src="../assets/energia/fuera-diseno-nominal.webp" alt="Off-design maps at the nominal point as a function of pump and expander speeds" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">05 / 08</span><h3>Off-design: actuator authority</h3><p>With the geometry fixed, the pump and expander speeds were varied by ±15 %. The almost horizontal pressure and flow isolines show that both variables depend almost exclusively on the pump.</p><p class="clave">Pump speed governs the cycle's pressure and flow rate.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="6 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/barrido-t-caliente.webp" aria-label="Enlarge figure: Sensitivity to the hot source"><img src="../assets/energia/barrido-t-caliente.webp" alt="Off-design maps for five hot source temperatures" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">06 / 08</span><h3>Sensitivity to the hot source</h3><p>Between 135 and 190 °C, efficiency and power increase without changing the actuator set points, while the pressure barely changes (152.7–153.8 bar).</p><p class="clave">Efficiency from 9.2 % to 14.6 % and power from 7.1 to 13.1 MW.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="7 of 8">
+            <figure><button type="button" class="ampliar" data-src="../assets/energia/barrido-t-fria.webp" aria-label="Enlarge figure: Sensitivity to the cold source"><img src="../assets/energia/barrido-t-fria.webp" alt="Off-design maps for five cold source temperatures" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">07 / 08</span><h3>Sensitivity to the cold source</h3><p>This is the main disturbance: a warmer heat sink lowers the CO₂ density at the pump inlet, which reduces the flow rate and the turbine expansion ratio.</p><p class="clave">From 0.1 to 20 °C, efficiency drops from 11.5 % to 9.0 % and power is almost halved, from 10.1 to 5.4 MW.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="8 of 8">
+            <figure class="grafica-svg"><svg viewBox="0 0 640 395" role="img" aria-labelledby="g23t g23d"><title id="g23t">Net power versus hot source flow rate</title><desc id="g23d">154 kg/s: 7.0 MW; 173 kg/s: 8.3 MW; 192 kg/s (nominal): 9.2 MW; 211 kg/s: 9.7 MW; 231 kg/s: 9.8 MW.</desc><line x1="70.0" x2="70.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="70.0" y="362" text-anchor="middle">140</text><line x1="178.0" x2="178.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="178.0" y="362" text-anchor="middle">160</text><line x1="286.0" x2="286.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="286.0" y="362" text-anchor="middle">180</text><line x1="394.0" x2="394.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="394.0" y="362" text-anchor="middle">200</text><line x1="502.0" x2="502.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="502.0" y="362" text-anchor="middle">220</text><line x1="610.0" x2="610.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="610.0" y="362" text-anchor="middle">240</text><line x1="70" x2="610" y1="340.0" y2="340.0" stroke="var(--linea)"/><text class="eje" x="58" y="344.0" text-anchor="end">6</text><line x1="70" x2="610" y1="271.1" y2="271.1" stroke="var(--linea)"/><text class="eje" x="58" y="275.1" text-anchor="end">7</text><line x1="70" x2="610" y1="202.2" y2="202.2" stroke="var(--linea)"/><text class="eje" x="58" y="206.2" text-anchor="end">8</text><line x1="70" x2="610" y1="133.3" y2="133.3" stroke="var(--linea)"/><text class="eje" x="58" y="137.3" text-anchor="end">9</text><line x1="70" x2="610" y1="64.4" y2="64.4" stroke="var(--linea)"/><text class="eje" x="58" y="68.4" text-anchor="end">10</text>
+<path d="M145.6 271.1 L248.2 181.6 L352.1 119.6 L453.4 85.1 L561.4 78.2" fill="none" stroke="var(--marino)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="145.6" cy="271.1" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/><circle cx="248.2" cy="181.6" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/><circle cx="352.1" cy="119.6" r="7" fill="var(--naranja)" stroke="#fff" stroke-width="2"/><circle cx="453.4" cy="85.1" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/><circle cx="561.4" cy="78.2" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/>
+<text x="352.1" y="103.6" text-anchor="end" font-size="13" font-weight="500" fill="var(--naranja-texto)" font-family="var(--f-texto)">Nominal point, 9.2 MW</text>
+<text x="258.2" y="211.6" font-size="13" fill="var(--gris)" font-family="var(--f-texto)">+1.3 MW</text>
+<text x="507.4" y="108.2" text-anchor="middle" font-size="13" fill="var(--gris)" font-family="var(--f-texto)">+0.1 MW</text>
+<text class="titulo-eje" x="340" y="390" text-anchor="middle">Hot source flow rate [kg/s]</text>
+<text class="titulo-eje" x="16" y="20">Net power [MW]</text></svg></figure>
+            <div class="texto"><span class="num">08 / 08</span><h3>Diminishing returns of the hot flow rate</h3><p>Increasing the hot source flow rate raises the power, but with diminishing returns: the heater reaches its heat transfer limit.</p><p class="clave">From 154 to 173 kg/s, 1.3 MW is gained; from 211 to 231 kg/s, only 0.1 MW. A flow rate higher than necessary is not justified.</p></div>
+          </article>
+        </div>
+        <div class="carrusel-controles">
+          <button class="carrusel-boton" id="anterior" type="button" aria-label="Previous result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+          <button class="carrusel-boton" id="siguiente" type="button" aria-label="Next result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+          <div class="puntos" id="puntos"></div>
+          <span class="contador" id="contador" aria-live="polite">1 / 8</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CONCLUSIONES -->
+  <section class="seccion" aria-labelledby="t-concl">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Conclusions</span>
+        <h2 id="t-concl">Proposed control strategy</h2>
+      </div>
+      <div class="prosa">
+        <ul class="conclusiones">
+          <li class="revelar">The <strong>high-side pressure</strong> is the main controlled variable and is regulated mainly through the <strong>pump speed</strong>.</li>
+          <li class="revelar">The <strong>cold source temperature</strong> is the main disturbance: it should be measured and included as feedforward in the pump control loop.</li>
+          <li class="revelar">The <strong>hot source flow rate</strong> and the <strong>expander speed</strong> act as secondary actuators, affecting efficiency and power but not pressure.</li>
+          <li class="revelar">The expander speed should be subordinated to the pump speed: increasing it is only beneficial when the flow rate is sufficient.</li>
+        </ul>
+        <p class="revelar gris">The study is limited to steady state. Future work includes a dynamic model to validate the strategy in closed loop, for example with model predictive control (MPC), and its coupling with the charging stage to evaluate the round-trip efficiency of the complete system.</p>
+      </div>
+      <a class="documento horizontal revelar" href="../assets/energia/TFM_Carlos_Molla_Baterias_Carnot_CO2.pdf" download>
+        <span class="doc-etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download document</span>
+        <span class="doc-marco"><img src="../assets/energia/portada.webp" alt="Cover of the Master's thesis on CO₂ Carnot batteries" width="663" height="937" loading="lazy"></span>
+        <span class="doc-pie"><strong>Master's thesis</strong><small>PDF in English, 60 pages</small></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== MERCADO ELÉCTRICO ===================== -->
+  <!-- ===================== PROYECTO 02: MERCADO ===================== -->
+  <section class="seccion proyecto-banda seccion-mercado" id="mercado" aria-labelledby="t-mercado">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="banda-num">Project 02</span>
+        <h2 id="t-mercado">Electricity market simulator</h2>
+        <p class="banda-ctx">Personal project</p>
+      </div>
+      <div class="prosa">
+        <p class="revelar">To understand how the price of electricity is set, I developed in Python and Streamlit a web application that simulates the wholesale electricity market in real time. It is designed for training sessions: one person acts as the market operator from a computer and everyone else takes part from their phones as generation companies.</p>
+        <div class="acciones revelar">
+          <a class="boton principal" href="https://simuladormercado2-tf9xg2yjxcjjfs5dufe6jl.streamlit.app/" target="_blank" rel="noopener">Try the simulator</a>
+          <a class="boton" href="https://github.com/chartiprojects/SimuladorMercado2" target="_blank" rel="noopener">View the code on GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="envoltura">
+      <ol class="pasos-tfg pasos-juego">
+        <li class="revelar"><span>01</span><strong>The market operator</strong><p>Whoever runs the game opens a room on their computer, projects it on screen and shows a QR code. For each hour of the day, they publish the forecast demand and the renewable output.</p></li>
+        <li class="revelar" style="--retraso:.06s"><span>02</span><strong>The companies</strong><p>Participants scan the QR code with their phones and register their generation company. Each one manages four plants (nuclear, coal, combined cycle and gas) and submits how much power it offers and at what price.</p></li>
+        <li class="revelar" style="--retraso:.12s"><span>03</span><strong>Market clearing</strong><p>The operator clears the market: bids are ranked from cheapest to most expensive until demand is covered, and the last accepted bid sets the price for all. If demand is not covered, there is a blackout and the round is repeated.</p></li>
+        <li class="revelar" style="--retraso:.18s"><span>04</span><strong>The ranking</strong><p>After five hours of trading, the company with the highest profit wins, once operating, start-up and shutdown costs and the costs of sudden power changes have been deducted.</p></li>
+      </ol>
+    </div>
+    <div class="envoltura">
+      <div class="merito revelar" id="merito">
+        <div class="merito-cab">
+          <div>
+            <h3>How the price is set</h3>
+            <p class="gris">Choose an hour of the game: the plants are ranked from lowest to highest cost and the last one needed to cover demand sets the price for all.</p>
+          </div>
+          <div class="capas-botones" role="group" aria-label="Hour" id="merito-horas"></div>
+        </div>
+        <div class="merito-datos" aria-live="polite">
+          <div><span>Demand</span><strong id="mo-dem">–</strong></div>
+          <div><span>Renewables</span><strong id="mo-ren">–</strong></div>
+          <div><span>Residual demand</span><strong id="mo-res">–</strong></div>
+          <div class="destaca"><span>Marginal price</span><strong id="mo-precio">–</strong></div>
+        </div>
+        <div class="merito-lienzo"><svg id="merito-svg" viewBox="0 0 760 320" role="img" aria-labelledby="mo-t"><title id="mo-t">Merit order curve with the demand for the selected hour</title></svg></div>
+        <div class="cem-leyenda merito-leyenda" aria-hidden="true"><span><i style="background:#4E9E6C"></i>Renewables</span><span><i style="background:#1B2C4F"></i>Nuclear</span><span><i style="background:#5A6478"></i>Coal</span><span><i style="background:#3E78B3"></i>Combined cycle</span><span><i style="background:#E8822A"></i>Gas (peaking)</span></div>
+        <p class="nota">Demand, renewables and actual simulator costs for a four-company game, assuming everyone bids at their variable cost. In the game, each player decides their bid and the price can rise.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Other projects">
+      <a href="index.html"><span>Back to</span><strong>Home</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>Want to know more?</span><strong>Contact</strong></a>
+    </nav>
+  </div>
+</main>
+
+<dialog class="visor" id="visor">
+  <img id="visor-img" src="" alt="">
+  <button type="button" id="visor-cerrar">Close</button>
+</dialog>
+
+<script src="../js/en/main.js"></script>
+<script src="../js/en/carrusel.js"></script>
+<script src="../js/en/energia.js"></script>
+</body>
+</html>

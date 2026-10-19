@@ -108,7 +108,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<canvas id="pixel-carga" aria-label="ChessAI, by Carlos Mollá. Cargando"></canvas>
+			<canvas id="pixel-carga" aria-label="ChessAI, by Carlos Mollá"></canvas>
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -148,7 +148,8 @@ var PixelCarga = (function () {
 		"7": ["", "", "#####", "....#", "...#.", "..#..", ".#...", ".#...", ".#..."],
 		"8": ["", "", ".###.", "#...#", "#...#", ".###.", "#...#", "#...#", ".###."],
 		"9": ["", "", ".###.", "#...#", "#...#", ".####", "....#", "....#", ".###."],
-		"%": ["", "", "##..#", "##..#", "...#.", "..#..", ".#...", "#..##", "#..##"]
+		"%": ["", "", "##..#", "##..#", "...#.", "..#..", ".#...", "#..##", "#..##"],
+		"i": ["", "", ".#", "", "##", ".#", ".#", ".#", "###"]
 	};
 	function ancho(c) {
 		if (c === " ") return 3;
@@ -165,6 +166,7 @@ var PixelCarga = (function () {
 	var cv, cx, P = 1, ox = 0, oy = 0;
 	var objetivo = 0, mostrado = 0, activo = true, fin = null, t0 = performance.now();
 	var W = 172, H = 126; // resolución lógica
+	var ETQ = /[?&]lang=en\b/.test(location.search) ? "loading" : "cargando";
 
 	var ORO = "#E9B949", ORO_OSC = "#8A6420", SOMBRA = "#3A2810", CREMA = "#EADFC6", TENUE = "#7D6B55";
 	var FONDO_A = "#120D09", FONDO_B = "#18120C", MARCO = "#5A4224";
@@ -256,9 +258,9 @@ var PixelCarga = (function () {
 		// Estado
 		var pct = Math.round(mostrado * 100) + "%";
 		var puntos = Math.floor(t * 2.5) % 4;
-		var w1 = medir("cargando");
+		var w1 = medir(ETQ);
 		var xl = bx;
-		texto("cargando", xl, 99, 1, TENUE, null);
+		texto(ETQ, xl, 99, 1, TENUE, null);
 		for (var d = 0; d < 3; d++) if (d < puntos) px(xl + w1 + 2 + d * 3, 106, 1, 1, TENUE);
 		texto(pct, bx + bw - medir(pct), 99, 1, CREMA, null);
 
