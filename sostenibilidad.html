@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sostenibilidad | Carlos Mollá</title>
+<meta name="description" content="Análisis de ciclo de vida de la industria española del cemento con SimaPro: clínker, cinco tipos de cemento y un escenario de combustibles alternativos.">
+<meta property="og:title" content="Análisis de ciclo de vida del cemento, Carlos Mollá">
+<meta property="og:description" content="Medir para reducir: qué cemento contamina menos y por qué no toda alternativa «verde» lo es.">
+<meta property="og:image" content="assets/sostenibilidad/comparativa-cementos.webp">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pag-verde pag-proyecto">
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html">Carlos Mollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Secciones">
+      <ul id="pestanas">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="energia.html">Energía</a></li>
+        <li><a href="hvac.html">HVAC</a></li>
+        <li><a href="ia.html">IA</a></li>
+        <li><a href="sostenibilidad.html" aria-current="page">Sostenibilidad</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla">
+      <div class="herr-pagina" aria-label="Herramientas utilizadas"><span>Herramientas</span><ul><li>SimaPro</li><li>Ecoinvent</li><li>Excel</li><li>Python</li><li>pyGAPS</li><li>scikit-learn</li><li>PySR</li><li>IA generativa</li></ul></div>
+      <div class="proyecto-texto">
+        <h1 id="titulo">Sostenibilidad</h1>
+        <p class="entrada">Durante mi formación me he dado cuenta de que los recursos del planeta son finitos y de que el clima ya está cambiando. Las decisiones que se tomen en esta década sobre cómo producimos energía, materiales y edificios marcarán la calidad de vida de las próximas generaciones. La sostenibilidad ya no es una opción: es una condición para que la industria siga siendo viable. Por eso he orientado siempre mis estudios a colaborar en el impulso de la transición energética. Como ejemplo, presento un proyecto sobre cómo reducir el CO₂ equivalente de los cementos mediante distintos procesos y escenarios, y mi Trabajo Fin de Grado sobre la captura de CO₂ por adsorción.</p>
+      </div>
+      <figure class="figura-cabeza planeta" aria-hidden="true">
+        <svg viewBox="0 0 480 480" id="planeta-svg">
+          <defs>
+            <radialGradient id="pt-mar" cx="36%" cy="30%" r="80%"><stop offset="0" stop-color="#4FA3D9"/><stop offset=".55" stop-color="#2A75B3"/><stop offset="1" stop-color="#163F70"/></radialGradient>
+            <radialGradient id="pt-aura" cx="50%" cy="50%" r="50%"><stop offset=".55" stop-color="#7FC6E8" stop-opacity=".28"/><stop offset=".72" stop-color="#2E7D55" stop-opacity=".10"/><stop offset="1" stop-color="#2E7D55" stop-opacity="0"/></radialGradient>
+            <radialGradient id="pt-sombra" cx="30%" cy="26%" r="78%"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".35" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".72" stop-color="#06182B" stop-opacity=".12"/><stop offset="1" stop-color="#06182B" stop-opacity=".55"/></radialGradient>
+            <radialGradient id="pt-borde" cx="50%" cy="50%" r="50%"><stop offset=".86" stop-color="#9ED8F5" stop-opacity="0"/><stop offset="1" stop-color="#BFE6FA" stop-opacity=".55"/></radialGradient>
+            <filter id="pt-difuso" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="1.6"/></filter>
+            <clipPath id="pt-clip"><circle cx="240" cy="240" r="116"/></clipPath>
+            <g id="pt-molino">
+              <path d="M0 0 L-1.8 0 L-.8 -40 L.8 -40 L1.8 0 Z" fill="#B9C3CE"/>
+              <g transform="translate(0 -40)">
+                <g>
+                  <path d="M0 0 C-1.8 -6 -1.4 -15 0 -20 C1 -15 1.2 -6 0 0 Z" fill="#F7F9FB" stroke="#7E8C9E" stroke-width=".9"/>
+                  <path d="M0 0 C-1.8 -6 -1.4 -15 0 -20 C1 -15 1.2 -6 0 0 Z" fill="#F7F9FB" stroke="#7E8C9E" stroke-width=".9" transform="rotate(120)"/>
+                  <path d="M0 0 C-1.8 -6 -1.4 -15 0 -20 C1 -15 1.2 -6 0 0 Z" fill="#F7F9FB" stroke="#7E8C9E" stroke-width=".9" transform="rotate(240)"/>
+                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.6s" repeatCount="indefinite"/>
+                </g>
+                <circle r="2.4" fill="#7E8C9E"/>
+              </g>
+            </g>
+            <g id="pt-placa">
+              <path d="M-7 0 V-8 M7 0 V-13" stroke="#5A6478" stroke-width="1.6"/>
+              <path d="M-15 -7 L15 -15 L15 -22 L-15 -14 Z" fill="#1B2C4F" stroke="#8DA3C4" stroke-width=".8"/>
+              <path d="M-7.5 -9 V-16 M0 -11 V-18 M7.5 -13 V-20 M-15 -10.5 L15 -18.5" stroke="#4E6FA6" stroke-width=".7"/>
+            </g>
+            <g id="pt-arbol">
+              <path d="M0 0 V-9" stroke="#6B4A2B" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cy="-16" r="8" fill="#4E9E6C"/><circle cx="-4" cy="-13" r="5.5" fill="#3F8A5B"/><circle cx="3" cy="-19" r="4" fill="#6CBF88"/>
+            </g>
+          </defs>
+          <circle cx="240" cy="240" r="200" fill="url(#pt-aura)"/>
+          <!-- economía circular: tres flechas en el mismo sentido -->
+          <g class="pt-orbita" fill="none" stroke-width="5" stroke-linecap="round">
+            <path d="M278.3 60.0 A184 184 0 0 1 421.2 272.0" stroke="#1F5A3D"/><path d="M418.9 284.8 L429.9 271.5 L413.2 268.5 Z" fill="#1F5A3D" stroke="#1F5A3D" stroke-width="2" stroke-linejoin="round"/><path d="M376.7 363.1 A184 184 0 0 1 121.7 381.0" stroke="#2E7D55"/><path d="M111.8 372.6 L117.8 388.7 L128.7 375.7 Z" fill="#2E7D55" stroke="#2E7D55" stroke-width="2" stroke-linejoin="round"/><path d="M65.0 296.9 A184 184 0 0 1 177.1 67.1" stroke="#4E9E6C"/><path d="M189.3 62.7 L172.3 59.8 L178.1 75.8 Z" fill="#4E9E6C" stroke="#4E9E6C" stroke-width="2" stroke-linejoin="round"/>
+            <animateTransform attributeName="transform" type="rotate" from="0 240 240" to="360 240 240" dur="48s" repeatCount="indefinite"/>
+          </g>
+          <!-- planeta -->
+          <circle cx="240" cy="240" r="116" fill="url(#pt-mar)"/>
+          <g clip-path="url(#pt-clip)">
+            <g>
+              <g fill="#5DA66E"><g><path d="M20 150 C40 120 85 112 110 128 C130 140 128 162 112 172 C120 190 104 214 84 214 C70 232 52 226 46 206 C30 198 14 178 20 150 Z"/><path d="M70 232 C90 226 104 240 100 262 C98 286 86 312 74 322 C66 300 58 276 60 256 C62 244 64 236 70 232 Z"/><path d="M150 118 C172 104 210 102 236 116 C262 108 296 118 304 140 C312 158 296 172 274 170 C262 186 240 190 226 178 C212 186 190 182 184 166 C164 168 146 150 150 118 Z"/><path d="M196 190 C214 184 236 196 240 218 C244 242 232 268 214 282 C200 268 190 246 188 224 C186 208 188 196 196 190 Z"/><path d="M262 236 C280 228 304 236 306 256 C308 274 290 284 272 278 C258 272 252 248 262 236 Z"/><path d="M310 190 C318 182 330 186 330 198 C328 210 316 212 312 204 Z"/><path d="M352 132 C372 120 402 124 416 140 C430 154 424 176 404 180 C392 198 370 196 362 180 C346 172 340 148 352 132 Z"/><path d="M380 228 C402 220 432 230 440 252 C446 272 430 290 406 288 C386 286 370 268 372 250 C372 240 374 232 380 228 Z"/><path d="M440 170 C452 164 466 172 462 186 C456 196 442 192 440 180 Z"/></g><g transform="translate(481 0)"><path d="M20 150 C40 120 85 112 110 128 C130 140 128 162 112 172 C120 190 104 214 84 214 C70 232 52 226 46 206 C30 198 14 178 20 150 Z"/><path d="M70 232 C90 226 104 240 100 262 C98 286 86 312 74 322 C66 300 58 276 60 256 C62 244 64 236 70 232 Z"/><path d="M150 118 C172 104 210 102 236 116 C262 108 296 118 304 140 C312 158 296 172 274 170 C262 186 240 190 226 178 C212 186 190 182 184 166 C164 168 146 150 150 118 Z"/><path d="M196 190 C214 184 236 196 240 218 C244 242 232 268 214 282 C200 268 190 246 188 224 C186 208 188 196 196 190 Z"/><path d="M262 236 C280 228 304 236 306 256 C308 274 290 284 272 278 C258 272 252 248 262 236 Z"/><path d="M310 190 C318 182 330 186 330 198 C328 210 316 212 312 204 Z"/><path d="M352 132 C372 120 402 124 416 140 C430 154 424 176 404 180 C392 198 370 196 362 180 C346 172 340 148 352 132 Z"/><path d="M380 228 C402 220 432 230 440 252 C446 272 430 290 406 288 C386 286 370 268 372 250 C372 240 374 232 380 228 Z"/><path d="M440 170 C452 164 466 172 462 186 C456 196 442 192 440 180 Z"/></g></g>
+              <g fill="#3E8A57"><g><path d="M70 140 C84 134 100 140 98 152 C86 158 72 154 70 140 Z"/><path d="M80 262 C88 258 94 268 90 286 C82 282 78 272 80 262 Z"/><path d="M268 150 C280 144 294 150 290 160 C280 164 270 160 268 150 Z"/><path d="M210 250 C220 248 228 256 222 270 C214 266 208 258 210 250 Z"/><path d="M368 142 C380 136 396 140 396 152 C384 158 370 154 368 142 Z"/><path d="M396 244 C410 240 424 250 420 262 C408 266 398 258 396 244 Z"/></g><g transform="translate(481 0)"><path d="M70 140 C84 134 100 140 98 152 C86 158 72 154 70 140 Z"/><path d="M80 262 C88 258 94 268 90 286 C82 282 78 272 80 262 Z"/><path d="M268 150 C280 144 294 150 290 160 C280 164 270 160 268 150 Z"/><path d="M210 250 C220 248 228 256 222 270 C214 266 208 258 210 250 Z"/><path d="M368 142 C380 136 396 140 396 152 C384 158 370 154 368 142 Z"/><path d="M396 244 C410 240 424 250 420 262 C408 266 398 258 396 244 Z"/></g></g>
+              <g fill="#C9B98A" opacity=".9"><g><path d="M206 140 C220 132 246 134 256 146 C246 156 222 158 206 150 Z"/><path d="M210 200 C222 198 232 206 230 220 C220 222 210 214 210 200 Z"/><path d="M60 170 C72 166 86 172 84 184 C74 188 62 182 60 170 Z"/><path d="M386 162 C396 160 406 166 402 174 C394 176 386 170 386 162 Z"/></g><g transform="translate(481 0)"><path d="M206 140 C220 132 246 134 256 146 C246 156 222 158 206 150 Z"/><path d="M210 200 C222 198 232 206 230 220 C220 222 210 214 210 200 Z"/><path d="M60 170 C72 166 86 172 84 184 C74 188 62 182 60 170 Z"/><path d="M386 162 C396 160 406 166 402 174 C394 176 386 170 386 162 Z"/></g></g>
+              <animateTransform attributeName="transform" type="translate" from="0 0" to="-481 0" dur="60s" repeatCount="indefinite"/>
+            </g>
+            <ellipse cx="240" cy="126" rx="46" ry="9" fill="#F4FAFD" opacity=".9" filter="url(#pt-difuso)"/>
+            <g fill="#FFFFFF" opacity=".88" filter="url(#pt-difuso)">
+              <g><g><g transform="translate(40 150) scale(1)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(170 205) scale(1.3)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(250 135) scale(0.9)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(110 265) scale(1.1)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(300 240) scale(0.8)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(200 300) scale(1)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(380 180) scale(1.2)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(440 270) scale(0.9)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><ellipse cx="50.0" cy="195" rx="30.0" ry="2.5"/><ellipse cx="180.0" cy="175" rx="40.0" ry="2.5"/><ellipse cx="295.0" cy="285" rx="35.0" ry="2.5"/></g><g transform="translate(481 0)"><g transform="translate(40 150) scale(1)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(170 205) scale(1.3)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(250 135) scale(0.9)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(110 265) scale(1.1)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(300 240) scale(0.8)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(200 300) scale(1)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(380 180) scale(1.2)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><g transform="translate(440 270) scale(0.9)"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="11" ry="8"/><ellipse cx="6" cy="-7" rx="13" ry="9"/><ellipse cx="18" cy="-1" rx="10" ry="6"/></g><ellipse cx="50.0" cy="195" rx="30.0" ry="2.5"/><ellipse cx="180.0" cy="175" rx="40.0" ry="2.5"/><ellipse cx="295.0" cy="285" rx="35.0" ry="2.5"/></g><animateTransform attributeName="transform" type="translate" from="0 0" to="-481 0" dur="38s" repeatCount="indefinite"/></g>
+            </g>
+          </g>
+          <circle cx="240" cy="240" r="116" fill="url(#pt-sombra)"/>
+          <circle cx="240" cy="240" r="119" fill="url(#pt-borde)"/>
+          <!-- superficie: molinos, placas solares y árboles (giran con el planeta) -->
+          <g>
+            <use href="#pt-molino" transform="rotate(0 240 240) translate(240 125)"/><use href="#pt-placa" transform="rotate(30 240 240) translate(240 125)"/><use href="#pt-arbol" transform="rotate(68 240 240) translate(240 125)"/><use href="#pt-molino" transform="rotate(90 240 240) translate(240 125)"/><use href="#pt-arbol" transform="rotate(128 240 240) translate(240 125)"/><use href="#pt-placa" transform="rotate(150 240 240) translate(240 125)"/><use href="#pt-molino" transform="rotate(180 240 240) translate(240 125)"/><use href="#pt-arbol" transform="rotate(218 240 240) translate(240 125)"/><use href="#pt-placa" transform="rotate(240 240 240) translate(240 125)"/><use href="#pt-molino" transform="rotate(270 240 240) translate(240 125)"/><use href="#pt-arbol" transform="rotate(308 240 240) translate(240 125)"/><use href="#pt-placa" transform="rotate(330 240 240) translate(240 125)"/>
+            <animateTransform attributeName="transform" type="rotate" from="0 240 240" to="-360 240 240" dur="90s" repeatCount="indefinite"/>
+          </g>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ÍNDICE DE PROYECTOS -->
+  <nav class="seccion indice-seccion" aria-label="Proyectos de esta página">
+    <div class="envoltura indice">
+        <a class="indice-proy revelar" href="#proyecto">
+          <span class="ip-num">Proyecto 01</span>
+          <strong>Ciclo de vida del cemento</strong>
+          <span class="ip-ctx">Proyecto de máster, Universidad de Lieja</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+        <a class="indice-proy revelar" href="#adsorcion" style="--retraso:.08s">
+          <span class="ip-num">Proyecto 02</span>
+          <strong>Captura de CO₂ por adsorción</strong>
+          <span class="ip-ctx">Trabajo Fin de Grado, I3A, Universidad de Zaragoza</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+    </div>
+  </nav>
+
+
+  <!-- 2. EL PROYECTO -->
+  <section class="seccion proyecto-banda" id="proyecto" aria-labelledby="t-proyecto">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="banda-num">Proyecto 01</span>
+        <h2 id="t-proyecto">Ciclo de vida del cemento</h2>
+          <p class="banda-ctx">Proyecto de máster, Universidad de Lieja</p>
+      </div>
+      <div class="prosa">
+        <p class="revelar">En la asignatura <em>Life Cycle Assessment and Ecodesign</em> modelé en equipo con SimaPro la producción de cemento en España, a partir del estudio de García-Gusano et al. (2015): primero el clínker, después cinco tipos de cemento y, por último, un escenario con combustibles alternativos. Mi modelo reproduce el resultado de referencia en cambio climático con una diferencia del 0,3 %.</p>
+        <ul class="ficha revelar">
+          <li><span>Norma</span><strong>ISO 14040 / 14044</strong></li>
+          <li><span>Herramientas</span><strong>SimaPro 10.2 y Ecoinvent 3, método ILCD 2011</strong></li>
+          <li><span>Alcance</span><strong>De la cuna a la puerta</strong></li>
+          <li><span>Unidades funcionales</span><strong>1 t de clínker y 1 t de cemento</strong></li>
+        </ul>
+        <figure class="horno-viva horno-proyecto" id="horno">
+          <svg viewBox="0 0 480 380" role="img" aria-labelledby="hn-t hn-d">
+            <title id="hn-t">Esquema animado de la producción de clínker y del origen de su CO₂</title>
+            <desc id="hn-d">La caliza entra en el horno rotatorio, se calcina y sale como clínker. El CO₂ procede de la propia reacción química de la caliza y de la combustión. Por cada tonelada de clínker, el modelo da 932 kg de CO₂ equivalente, de los que unos 528 kg proceden de la calcinación.</desc>
+            <defs>
+              <linearGradient id="hn-tubo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A3F69"/><stop offset="1" stop-color="#1B2C4F"/></linearGradient>
+              <linearGradient id="hn-llama" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#F6B54E"/><stop offset="1" stop-color="#E8822A" stop-opacity="0"/></linearGradient>
+              <clipPath id="hn-clip"><path d="M150 170 L372 214 L366 244 L144 200 Z"/></clipPath>
+            </defs>
+            <line x1="20" y1="300" x2="460" y2="300" class="hn-suelo"/>
+            <!-- caliza -->
+            <path d="M28 300 L62 252 L80 266 L98 246 L128 300 Z" class="hn-caliza"/>
+            <text x="78" y="322" text-anchor="middle" class="hn-et">Caliza</text>
+            <!-- precalentador -->
+            <rect x="128" y="96" width="40" height="110" rx="4" class="hn-torre"/>
+            <path d="M98 262 L138 200" class="hn-cinta"/>
+            <!-- horno rotatorio -->
+            <path d="M150 170 L372 214 L366 244 L144 200 Z" fill="url(#hn-tubo)"/>
+            <g clip-path="url(#hn-clip)"><path d="M120 150 L400 206 M120 166 L400 222 M120 182 L400 238 M120 198 L400 254" class="hn-giro"/></g>
+            <path d="M366 232 L436 246" stroke="url(#hn-llama)" stroke-width="16" stroke-linecap="round" class="hn-llama"/>
+            <path d="M190 206 L196 300 M300 228 L306 300" class="hn-apoyo"/>
+            <text x="258" y="322" text-anchor="middle" class="hn-et">Horno rotatorio</text>
+            <!-- clínker -->
+            <g class="hn-clinker"><circle cx="0" cy="0" r="4"/><circle cx="0" cy="0" r="3.4"/><circle cx="0" cy="0" r="4.4"/><circle cx="0" cy="0" r="3"/></g>
+            <path d="M392 300 L410 284 L430 286 L446 300 Z" class="hn-monton"/>
+            <text x="420" y="322" text-anchor="middle" class="hn-et">Clínker</text>
+            <!-- CO2 de proceso (precalentador) -->
+            <g class="hn-co2 quimica">
+              <g><circle r="15"/><text>CO₂</text></g><g><circle r="12"/><text>CO₂</text></g><g><circle r="14"/><text>CO₂</text></g><g><circle r="11"/><text>CO₂</text></g>
+            </g>
+            <!-- CO2 de combustión (quemador) -->
+            <g class="hn-co2 combustion">
+              <g><circle r="12"/><text>CO₂</text></g><g><circle r="10"/><text>CO₂</text></g><g><circle r="11"/><text>CO₂</text></g>
+            </g>
+            <text x="186" y="74" class="hn-ecuacion">CaCO₃ → CaO + CO₂</text>
+            <!-- reparto -->
+            <g class="hn-reparto">
+              <text x="20" y="346" class="hn-pie">CO₂ equivalente por tonelada de clínker: <tspan class="hn-total" id="hn-total">932 kg</tspan></text>
+              <rect x="20" y="356" width="440" height="12" rx="6" class="hn-fondo"/>
+              <rect x="20" y="356" width="250" height="12" rx="6" class="hn-quim" id="hn-quim"/>
+              <rect x="270" y="356" width="190" height="12" rx="6" class="hn-comb" id="hn-comb"/>
+            </g>
+          </svg>
+          <figcaption class="hn-leyenda"><span><i class="ley-q"></i>Calcinación: ~57 %</span><span><i class="ley-c"></i>Combustibles, electricidad y transporte: ~43 %</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. POR QUÉ IMPORTA -->
+  <section class="seccion" aria-labelledby="t-porque">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Por qué importa</span>
+        <h2 id="t-porque">La industria también tiene que descarbonizarse</h2>
+      </div>
+      <div class="prosa">
+        <p class="revelar">La transición energética suele contarse desde la generación eléctrica, pero una parte enorme de las emisiones procede de lo que fabricamos. El cemento es el ejemplo más claro: es imprescindible para cualquier infraestructura y, a la vez, uno de los materiales con más huella de carbono del planeta.</p>
+        <p class="revelar">Lo que más me llamó la atención al estudiarlo es que más de la mitad de su CO₂ no sale de quemar combustible, sino de la propia química del proceso. Cambiar de combustible no basta: hay que cambiar también la receta del producto. Y para saber qué cambio funciona, hay que medirlo.</p>
+      </div>
+    </div>
+    <div class="envoltura">
+      <div class="cifras">
+        <div class="cifra revelar"><strong data-contar="8" data-pre="≈ " data-suf=" %">≈ 8 %</strong><p>de las emisiones mundiales de CO₂ procede del cemento. Si fuera un país, sería el tercer mayor emisor del mundo, solo por detrás de China y Estados Unidos.</p><small>Fuente: Chatham House, 2018</small></div>
+        <div class="cifra revelar" style="--retraso:.08s"><strong data-contar="6.4" data-dec="1" data-suf=" %">6,4 %</strong><p>de las emisiones de CO₂ de España en 2010 correspondieron a las 23,5 millones de toneladas de cemento producidas ese año.</p><small>Fuente: García-Gusano et al., 2015</small></div>
+        <div class="cifra revelar" style="--retraso:.16s"><strong data-contar="57" data-pre="~" data-suf=" %">~57 %</strong><p>del CO₂ equivalente de una tonelada de clínker en mi modelo procede de la calcinación de la caliza, una reacción química que ningún combustible puede evitar.</p><small>Elaboración propia a partir del modelo en SimaPro</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. COMPARADOR DE CEMENTOS -->
+  <section class="seccion" id="cementos" aria-labelledby="t-cementos">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">Resultados</span>
+          <h2 id="t-cementos" class="titulo-naranja">Menos clínker, menos impacto</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Comparé cinco cementos con distinta proporción de clínker y de materiales que lo sustituyen: escoria de alto horno, puzolana, cenizas volantes y caliza. El cemento Portland (CEM I) es el de mayor impacto en todas las categorías y sirve de referencia.</p>
+          <p class="revelar">El patrón es claro: cuanto menos clínker, menor impacto. El cemento compuesto (CEM V/A), con solo un 52 % de clínker, reduce los impactos entre un 30 y un 45 % y cumple las mismas normas de resistencia a largo plazo. Selecciona una categoría para comparar.</p>
+        </div>
+      </div>
+      <div class="cemento revelar" id="cemento">
+        <div class="capas-botones" role="group" aria-label="Categoría de impacto" id="cem-cat">
+          <button type="button" class="estacion" data-cat="0" aria-pressed="true">Cambio climático</button>
+          <button type="button" class="estacion" data-cat="1" aria-pressed="false">Toxicidad humana</button>
+          <button type="button" class="estacion" data-cat="2" aria-pressed="false">Ozono fotoquímico</button>
+          <button type="button" class="estacion" data-cat="3" aria-pressed="false">Acidificación</button>
+          <button type="button" class="estacion" data-cat="4" aria-pressed="false">Eutrofización</button>
+        </div>
+        <div class="cem-tabla" id="cem-tabla" role="list"></div>
+        <div class="cem-leyenda" aria-hidden="true"><span><i style="background:#1B2C4F"></i>Clínker</span><span><i style="background:#8DA3C4"></i>Escoria de alto horno</span><span><i style="background:#E8822A"></i>Puzolana</span><span><i style="background:#F6B54E"></i>Cenizas volantes</span><span><i style="background:#C9CED8"></i>Caliza</span><span><i style="background:#EDEFF3"></i>Yeso</span></div>
+        <p class="nota">Impacto relativo a 1 t de CEM I (100 %). Valores del informe, redondeados.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. ESCENARIO DE COMBUSTIBLES -->
+  <section class="seccion seccion-oscura" aria-labelledby="t-escenario">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">Escenario de mejora</span>
+          <h2 id="t-escenario" class="titulo-naranja">No toda alternativa es más limpia</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Sustituir la mitad del combustible fósil por neumáticos usados reduce la toxicidad, el ozono fotoquímico y la acidificación, pero aumenta el cambio climático en torno a un 10 %: el caucho sintético también es de origen fósil. Sin un análisis de ciclo de vida, esta medida se habría presentado como una mejora.</p>
+        </div>
+      </div>
+      <div class="escenario revelar" id="escenario">
+        <div class="esc-cab" aria-hidden="true"><span></span><span><i class="ley-base"></i>Escenario base</span><span><i class="ley-alt"></i>50 % neumáticos</span></div>
+        <div id="esc-filas"></div>
+      </div>
+      <div class="ia-aplicacion esc-leccion revelar">
+        <span class="antetitulo">Propuesta</span>
+        <p>Combinar los neumáticos con biomasa, como residuos de madera, para mantener el poder calorífico y reducir a la vez la huella de carbono.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CONCLUSIONES -->
+  <section class="seccion" aria-labelledby="t-concl">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Conclusiones</span>
+        <h2 id="t-concl">Lecciones para la industria</h2>
+      </div>
+      <div class="prosa">
+        <ul class="conclusiones">
+          <li class="revelar">La producción de <strong>clínker</strong> concentra la mayor parte de la carga ambiental del cemento, y el <strong>cambio climático</strong> es la categoría de impacto crítica.</li>
+          <li class="revelar">Reducir el <strong>contenido de clínker</strong> es la medida más eficaz: el cemento compuesto disminuye los impactos entre un 30 y un 45 % con respecto al Portland.</li>
+          <li class="revelar">La sustitución de combustibles exige una <strong>selección basada en datos</strong>: solo las fracciones de biomasa garantizan una reducción real de las emisiones de CO₂.</li>
+          <li class="revelar">La fiabilidad de un análisis de ciclo de vida depende de la <strong>calidad del inventario</strong>, por lo que su revisión crítica es una etapa imprescindible.</li>
+        </ul>
+      </div>
+      <a class="documento horizontal revelar" href="assets/sostenibilidad/ACV_Cemento_Carlos_Molla.pdf" download>
+        <span class="doc-etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Descargar documento</span>
+        <span class="doc-marco"><img src="assets/sostenibilidad/portada.webp" alt="Portada del informe de análisis de ciclo de vida del cemento español" width="663" height="937" loading="lazy"></span>
+        <span class="doc-pie"><strong>Análisis de ciclo de vida del cemento</strong><small>PDF en inglés, 27 páginas</small></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== TFG: ADSORCIÓN DE CO2 ===================== -->
+  <section class="seccion proyecto-banda" id="adsorcion" aria-labelledby="t-adsorcion">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="banda-num">Proyecto 02</span>
+        <h2 id="t-adsorcion">Captura de CO₂ por adsorción</h2>
+          <p class="banda-ctx">Trabajo Fin de Grado, I3A, Universidad de Zaragoza</p>
+      </div>
+      <div class="prosa">
+        <p class="revelar">Dentro de un proyecto del Instituto de Investigación en Ingeniería de Aragón (I3A), desarrollé herramientas en Python para acelerar el diseño de columnas de adsorción, que retienen el CO₂ de corrientes de gas como el biogás. La pregunta clave es cuánto tarda una columna en saturarse y dejar escapar el CO₂: el llamado punto de ruptura.</p>
+        <p class="revelar">Responderla en el laboratorio exige muchos ensayos. Mi trabajo fue construir un flujo numérico que lo predice a partir de las condiciones de operación, para ahorrar tiempo experimental y material adsorbente.</p>
+      </div>
+    </div>
+    <div class="envoltura">
+      <figure class="ruptura revelar" id="ruptura" aria-label="Esquema animado de una columna de adsorción y su curva de ruptura">
+        <svg viewBox="0 0 720 300" aria-hidden="true" id="ruptura-svg">
+          <defs><clipPath id="ru-clip"><rect x="60" y="40" width="84" height="200" rx="10"/></clipPath></defs>
+          <rect x="60" y="40" width="84" height="200" rx="10" class="ru-columna"/>
+          <g clip-path="url(#ru-clip)" id="ru-lecho"></g>
+          <rect x="60" y="40" width="84" height="200" rx="10" class="ru-borde"/>
+          <path d="M102 258 V242 M102 38 V22" class="ru-tubo"/>
+          <g id="ru-gas"></g>
+          <text x="102" y="285" text-anchor="middle" class="ru-et">Entrada: biogás con CO₂</text>
+          <text x="102" y="14" text-anchor="middle" class="ru-et">Salida</text>
+          <!-- curva de ruptura -->
+          <g transform="translate(250 30)">
+            <line x1="0" y1="220" x2="440" y2="220" class="ru-eje"/><line x1="0" y1="0" x2="0" y2="220" class="ru-eje"/>
+            <line x1="0" y1="198" x2="440" y2="198" class="ru-diez"/>
+            <text x="444" y="202" class="ru-et">10 %</text>
+            <text x="-8" y="6" text-anchor="end" class="ru-et">C/C₀</text>
+            <text x="440" y="240" text-anchor="end" class="ru-et">Tiempo</text>
+            <path id="ru-curva" class="ru-curva" d=""/>
+            <circle id="ru-punto" r="6" class="ru-punto" cx="-20" cy="-20"/>
+            <text id="ru-punto-et" class="ru-et ru-et-punto" x="-200" y="-200">Punto de ruptura</text>
+          </g>
+        </svg>
+        <figcaption class="nota ru-ley"><span><i class="ru-l-co2"></i>CO₂</span><span><i class="ru-l-n2"></i>Resto del gas</span><span><i class="ru-l-sat"></i>Adsorbente saturado</span><span>Esquema ilustrativo: el frente de saturación avanza hasta que el CO₂ empieza a salir por arriba.</span></figcaption>
+      </figure>
+      <ol class="pasos-tfg">
+        <li class="revelar"><span>01</span><strong>Datos FAIR</strong><p>Herramientas con pyGAPS para analizar isotermas de adsorción y convertirlas al formato de la base de datos del NIST.</p></li>
+        <li class="revelar" style="--retraso:.06s"><span>02</span><strong>136 simulaciones</strong><p>Diseño de experimentos con hipercubo latino y un script que automatiza el simulador RUPTURA desde Excel.</p></li>
+        <li class="revelar" style="--retraso:.12s"><span>03</span><strong>Modelo sustituto</strong><p>Regresión de procesos gaussianos con scikit-learn para predecir el punto de ruptura en cualquier condición.</p></li>
+        <li class="revelar" style="--retraso:.18s"><span>04</span><strong>Ecuaciones simples</strong><p>Descomposición tensorial (97,6 % de precisión) y regresión simbólica con PySR para obtener fórmulas aplicables en el laboratorio.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Otros proyectos">
+      <a href="ia.html"><span>Proyecto anterior</span><strong>IA</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>¿Quieres saber más?</span><strong>Contacto</strong></a>
+    </nav>
+  </div>
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/sostenibilidad.js"></script>
+</body>
+</html>

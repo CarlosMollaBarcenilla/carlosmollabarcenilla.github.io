@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulación HVAC | Carlos Mollá</title>
+<meta name="description" content="Diseño y simulación horaria de la instalación HVAC de un edificio de oficinas en Palermo: unidad de tratamiento de aire, fancoils y bomba de calor reversible.">
+<meta property="og:title" content="Simulación HVAC de un edificio de oficinas, Carlos Mollá">
+<meta property="og:description" content="Del edificio sin climatizar al escenario optimizado: −44 % de coste anual y 13,65 kWh/m² al año.">
+<meta property="og:image" content="assets/hvac/confort-final.webp">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pag-proyecto">
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html">Carlos Mollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Secciones">
+      <ul id="pestanas">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="energia.html">Energía</a></li>
+        <li><a href="hvac.html" aria-current="page">HVAC</a></li>
+        <li><a href="ia.html">IA</a></li>
+        <li><a href="sostenibilidad.html">Sostenibilidad</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA DEL PROYECTO -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla">
+      <div class="herr-pagina" aria-label="Herramientas utilizadas"><span>Herramientas</span><ul><li>Python</li><li>MATLAB</li><li>EES</li><li>AutoCAD</li><li>IA generativa</li></ul></div>
+      <div class="proyecto-texto">
+        <span class="antetitulo">Proyecto de máster, Universidad de Lieja</span>
+        <h1 id="titulo">Simulación HVAC</h1>
+        <p class="entrada">Diseñé desde cero y simulé hora a hora durante un año completo la instalación de climatización de un edificio de oficinas de 200 m² en Palermo (Italia): unidad de tratamiento de aire, fancoils a cuatro tubos y bomba de calor reversible. El objetivo era acercar el edificio al consumo casi nulo sin renunciar al confort térmico.</p>
+        <p class="original">Asignatura «Energy Flexibility in Buildings»</p>
+        <ul class="datos">
+          <li><strong>−44 %</strong><span>coste anual del escenario optimizado</span></li>
+          <li><strong>13,65</strong><span>kWh/m² al año de consumo final</span></li>
+          <li><strong>3,18</strong><span>SCOP de la bomba de calor (referencia: 2,8)</span></li>
+        </ul>
+      </div>
+      <figure class="figura-cabeza planta-viva" id="planta">
+        <div class="planta-lienzo">
+          <svg viewBox="0 0 600 400" role="img" aria-labelledby="pl-t pl-d" id="planta-svg">
+            <title id="pl-t">Planta del edificio de oficinas con las líneas de corriente del aire</title>
+            <desc id="pl-d">El aire tratado sale de los difusores de las oficinas y el comedor, se mezcla con el aire de cada sala y vuelve en su mayor parte por las rejillas de retorno de la propia sala; una fracción pasa al pasillo como aire de transferencia y se extrae por el aseo y el final del pasillo. Las líneas pasan de azul a naranja a medida que el aire se calienta.</desc>
+            <rect x="20" y="20" width="560" height="360" rx="6" class="pl-suelo"/>
+            <rect x="250" y="170" width="330" height="55" class="pl-pasillo"/><rect x="250" y="225" width="55" height="155" class="pl-pasillo"/>
+            <rect x="52" y="60" width="34" height="20" rx="3" class="pl-mueble"/><rect x="52" y="150" width="34" height="20" rx="3" class="pl-mueble"/><rect x="52" y="240" width="34" height="20" rx="3" class="pl-mueble"/><rect x="122" y="60" width="34" height="20" rx="3" class="pl-mueble"/><rect x="122" y="150" width="34" height="20" rx="3" class="pl-mueble"/><rect x="122" y="240" width="34" height="20" rx="3" class="pl-mueble"/><rect x="192" y="60" width="34" height="20" rx="3" class="pl-mueble"/><rect x="192" y="150" width="34" height="20" rx="3" class="pl-mueble"/><rect x="192" y="240" width="34" height="20" rx="3" class="pl-mueble"/><rect x="290" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="360" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="430" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="500" y="46" width="34" height="20" rx="3" class="pl-mueble"/><rect x="330" y="110" width="34" height="20" rx="3" class="pl-mueble"/><rect x="430" y="110" width="34" height="20" rx="3" class="pl-mueble"/><rect x="345" y="290" width="62" height="34" rx="5" class="pl-mueble"/><circle cx="520" cy="350" r="9" class="pl-mueble"/><circle cx="555" cy="350" r="9" class="pl-mueble"/><rect x="510" y="245" width="58" height="18" rx="4" class="pl-mueble"/>
+            <g id="pl-rutas"><path class="pl-ruta" d="M80 95 C 60 180, 160 250, 200 320 S 240 347, 262 347 C 282 345, 280 300, 278 250 C 276 205, 330 198, 420 198 S 520 198, 562 198"/><path class="pl-ruta" d="M190 95 C 230 160, 130 220, 160 300 S 230 352, 262 350 C 284 332, 286 240, 330 203 S 470 201, 482 222 C 492 262, 520 300, 540 322"/><path class="pl-ruta" d="M70 300 C 100 255, 190 300, 215 338 S 245 354, 262 354 C 282 350, 279 280, 300 214 S 420 192, 562 198"/><path class="pl-ruta" d="M190 300 C 205 332, 232 343, 262 341 C 288 328, 283 232, 342 206 S 470 206, 485 226 C 500 268, 525 305, 540 322"/><path class="pl-ruta" d="M330 85 C 360 135, 450 112, 500 140 S 528 160, 533 180 C 540 193, 548 197, 562 198"/><path class="pl-ruta" d="M480 85 C 425 110, 405 150, 470 152 S 530 158, 535 182 C 522 210, 497 205, 486 228 C 500 270, 525 305, 540 322"/><path class="pl-ruta" d="M378 268 C 425 330, 345 352, 333 300 S 322 266, 300 262 C 284 255, 290 214, 342 205 S 470 205, 485 228 C 500 270, 525 305, 540 322"/></g>
+            <g class="pl-muros">
+              <path d="M265 380 H20 V20 H580 V380 H295"/>
+              <path d="M250 20 V330 M250 365 V380"/>
+              <path d="M250 170 H515 M550 170 H580"/>
+              <path d="M305 225 H450 M450 225 H465 M500 225 H580"/>
+              <path d="M305 225 V245 M305 280 V380"/>
+              <path d="M450 225 V380"/>
+            </g>
+            <g class="pl-difusor"><circle cx="80" cy="95" r="7"/><circle cx="190" cy="95" r="7"/><circle cx="70" cy="300" r="7"/><circle cx="190" cy="300" r="7"/><circle cx="330" cy="85" r="7"/><circle cx="480" cy="85" r="7"/><circle cx="378" cy="268" r="7"/></g>
+            <g class="pl-rejilla"><rect x="554" y="190" width="16" height="16" rx="3"/><rect x="532" y="314" width="16" height="16" rx="3"/><rect x="128" y="198" width="14" height="14" rx="3"/><rect x="128" y="323" width="14" height="14" rx="3"/><rect x="398" y="91" width="14" height="14" rx="3"/><rect x="418" y="345" width="14" height="14" rx="3"/></g>
+            <g class="pl-et">
+              <text x="135" y="368" text-anchor="middle">Oficina 2</text>
+              <text x="415" y="160" text-anchor="middle">Oficina 1</text>
+              <text x="430" y="217" text-anchor="middle">Pasillo</text>
+              <text x="378" y="368" text-anchor="middle">Comedor</text>
+              <text x="515" y="368" text-anchor="middle">Aseo</text>
+            </g>
+          </svg>
+          <canvas id="planta-canvas" aria-hidden="true"></canvas>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 1. EL RETO -->
+  <section class="seccion" aria-labelledby="t-reto">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">El reto</span>
+        <h2 id="t-reto">Un clima suave, pero con mucha humedad y veranos exigentes</h2>
+      </div>
+      <div class="prosa">
+        <p class="revelar">Palermo tiene inviernos templados y veranos calurosos: con el año meteorológico tipo (TMY), la temperatura exterior oscila entre 2,1 °C y 33,5 °C, con una humedad relativa media del 74,7 %. La deshumidificación es, por tanto, una parte esencial del diseño.</p>
+        <p class="revelar">Antes de dimensionar ningún equipo simulé el edificio sin climatización. En verano el interior llegaba a 45 °C, por encima incluso de la temperatura exterior, y en invierno bajaba a 9 °C. La mayor parte de las horas quedaban fuera de las categorías de confort térmico aceptables, lo que confirmaba la necesidad de un sistema activo en ambas estaciones.</p>
+        <ul class="lista-ventajas revelar">
+          <li><strong>Confort</strong><span>Rango operativo de 20 a 24 °C en zonas ocupadas.</span></li>
+          <li><strong>Calidad del aire</strong><span>Ventilación higiénica de 3,6 m³/h por m² y ocupación según ASHRAE 62.1.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. LA INSTALACIÓN -->
+  <section class="seccion" aria-labelledby="t-instalacion">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Diseño del sistema</span>
+        <h2 id="t-instalacion" class="titulo-naranja">La instalación, componente a componente</h2>
+      </div>
+      <div class="instalacion revelar" id="instalacion" data-estacion="invierno">
+        <div class="inst-cabeza">
+          <p class="gris">Selecciona un componente para ver cómo lo modelé. Cambia de estación para ver cómo se adapta el sistema.</p>
+          <div class="estaciones" role="group" aria-label="Estación">
+            <button type="button" class="estacion" data-estacion="invierno" aria-pressed="true">Invierno</button>
+            <button type="button" class="estacion" data-estacion="verano" aria-pressed="false">Verano</button>
+          </div>
+        </div>
+        <div class="inst-aire">
+          <button type="button" class="comp" data-comp="exterior"><span class="comp-et">Aire exterior</span><strong>2,1–33,5 °C</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="recuperador"><span class="comp-et">Recuperador</span><strong id="c-rec">Precalienta</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="baterias"><span class="comp-et">Baterías</span><strong id="c-bat">Calentamiento</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="ventilador"><span class="comp-et">Ventilador</span><strong>SFP 1.200</strong></button>
+          <span class="inst-flecha" aria-hidden="true"></span>
+          <button type="button" class="comp" data-comp="zonas"><span class="comp-et">5 zonas + fancoils</span><strong>20–24 °C</strong></button>
+        </div>
+        <div class="inst-agua" aria-hidden="true">
+          <span class="agua-tramo agua-izq"><span class="agua-et" id="c-agua">Agua caliente a 45 °C</span></span>
+          <span class="agua-tramo agua-der"></span>
+          <span class="agua-sube s1"></span><span class="agua-sube s2"></span><span class="agua-sube s3"></span>
+        </div>
+        <div class="inst-generacion">
+          <button type="button" class="comp comp-bdc" data-comp="bomba"><span class="comp-et">Bomba de calor reversible</span><strong>10 kW</strong></button>
+        </div>
+        <div class="inst-detalle" id="inst-detalle" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ESCENARIOS -->
+  <section class="seccion" aria-labelledby="t-escenarios">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">Escenarios</span>
+          <h2 id="t-escenarios">Qué medidas reducen realmente el coste</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Con el sistema completo funcionando todo el año como caso base, evalué una a una distintas medidas de operación y de envolvente. Después combiné las más eficaces en un escenario final. Los costes son anuales, con un precio medio de la electricidad en Italia de 0,35 €/kWh.</p>
+        </div>
+      </div>
+      <div class="escenarios revelar" id="escenarios" role="list"></div>
+      <div class="esc-detalle" id="esc-detalle" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 4. RESULTADOS -->
+  <section class="seccion" aria-labelledby="t-resultados">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Análisis</span>
+        <h2 id="t-resultados" class="titulo-naranja">Resultados principales</h2>
+      </div>
+      <div class="carrusel revelar" id="carrusel" role="region" aria-roledescription="carrusel" aria-label="Resultados de la simulación HVAC">
+        <div class="carrusel-pista" id="pista" tabindex="0">
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="1 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/temp-sin-clima.webp" aria-label="Ampliar figura: Sin climatización"><img src="assets/hvac/temp-sin-clima.webp" alt="Temperaturas horarias interiores y exteriores del edificio sin climatización durante un año" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">01 / 07</span><h3>Sin climatización</h3><p>Simulación pasiva del edificio, sin equipos activos, para conocer su comportamiento térmico de partida.</p><p class="clave">El interior llega a 45 °C en verano y baja a 9 °C en invierno.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="2 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/confort-sin-clima.webp" aria-label="Ampliar figura: Confort de partida"><img src="assets/hvac/confort-sin-clima.webp" alt="Porcentaje de horas en cada categoría de confort por zona, sin climatización" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">02 / 07</span><h3>Confort de partida</h3><p>La categoría 4, la de mayor disconfort, domina en todas las zonas. Era imprescindible climatizar en ambas estaciones.</p><p class="clave">Entre el 60 y el 65 % de las horas en categoría 4, según la zona.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="3 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/temp-solo-uta.webp" aria-label="Ampliar figura: Solo ventilación"><img src="assets/hvac/temp-solo-uta.webp" alt="Temperaturas horarias con solo la unidad de tratamiento de aire" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">03 / 07</span><h3>Solo ventilación</h3><p>Con la unidad de tratamiento de aire y el caudal higiénico, la humedad queda controlada, pero el aire de ventilación no basta para cubrir las cargas sensibles.</p><p class="clave">La temperatura máxima interior baja de 45 °C a 35 °C.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="4 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/confort-base.webp" aria-label="Ampliar figura: Sistema completo"><img src="assets/hvac/confort-base.webp" alt="Porcentaje de horas en cada categoría de confort por zona, con el sistema completo" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">04 / 07</span><h3>Sistema completo</h3><p>Al añadir los fancoils, las cargas sensibles de cada zona quedan cubiertas y el confort se mantiene casi todas las horas. Esto validó el tamaño de 10 kW de la bomba de calor.</p><p class="clave">Consumo base de 4.869 kWh eléctricos y 1.704 € al año.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="5 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/confort-final.webp" aria-label="Ampliar figura: Escenario final"><img src="assets/hvac/confort-final.webp" alt="Porcentaje de horas en cada categoría de confort por zona, en el escenario final" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">05 / 07</span><h3>Escenario final</h3><p>Combinando apagado fuera de horario, control solar y bomba de calor, el confort en horas de uso se mantiene dentro de las categorías aceptables.</p><p class="clave">2.729 kWh al año y 955 € de coste: un 44 % menos que el caso base.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="6 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/deshumidificacion.webp" aria-label="Ampliar figura: Deshumidificación"><img src="assets/hvac/deshumidificacion.webp" alt="Agua retirada del aire por meses en el escenario final" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">06 / 07</span><h3>Deshumidificación</h3><p>La unidad de tratamiento de aire elimina 1.878 litros de agua al año. La demanda se concentra en verano, coincidiendo con los meses de mayor humedad específica.</p><p class="clave">Pico en agosto: 851 litros en el mes y hasta 53 litros en un solo día.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="7 de 7">
+            <figure><button type="button" class="ampliar" data-src="assets/hvac/consumo-final.webp" aria-label="Ampliar figura: Reparto del consumo"><img src="assets/hvac/consumo-final.webp" alt="Reparto del consumo eléctrico del escenario final entre compresor y ventiladores" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">07 / 07</span><h3>Reparto del consumo</h3><p>En el escenario final, el compresor de la bomba de calor concentra la mayor parte del consumo y los ventiladores el resto.</p><p class="clave">Compresor 2.128 kWh (78 %) y ventiladores 602 kWh (22 %).</p></div>
+          </article>
+        </div>
+        <div class="carrusel-controles">
+          <button class="carrusel-boton" id="anterior" type="button" aria-label="Resultado anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+          <button class="carrusel-boton" id="siguiente" type="button" aria-label="Resultado siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+          <div class="puntos" id="puntos"></div>
+          <span class="contador" id="contador" aria-live="polite">1 / 7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. NORMATIVA Y BIM -->
+  <section class="seccion" aria-labelledby="t-normativa">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Del estudio al proyecto</span>
+        <h2 id="t-normativa">Normativa y metodología BIM</h2>
+      </div>
+      <div class="normativa">
+        <article class="revelar">
+          <span class="norma-tag">Aplicado en el estudio</span>
+          <h3>Criterios de diseño</h3>
+          <p>Ocupación y ventilación según ASHRAE 62.1, evaluación del confort por categorías de confort térmico y envolvente basada en el estudio de D’Agostino et al. (2019) para edificios de oficinas en el clima mediterráneo.</p>
+        </article>
+        <article class="revelar" style="--retraso:.08s">
+          <span class="norma-tag">En un proyecto real en Italia</span>
+          <h3>Marco normativo italiano</h3>
+          <p>El diseño debería verificarse frente al Decreto de requisitos mínimos (DM 26/06/2015) y calcular las prestaciones energéticas según la UNI/TS 11300, junto con la UNI EN 16798-1 para ventilación y ambiente interior.</p>
+        </article>
+        <article class="revelar" style="--retraso:.16s">
+          <span class="norma-tag">Equivalente en España</span>
+          <h3>RITE y CTE</h3>
+          <p>En España, la misma instalación se regiría por el Reglamento de Instalaciones Térmicas en los Edificios (RITE) y por el Documento Básico de Ahorro de Energía del Código Técnico (CTE DB-HE).</p>
+        </article>
+        <article class="revelar bim" style="--retraso:.24s">
+          <span class="norma-tag">Siguiente paso</span>
+          <h3>Instalaciones MEP en BIM</h3>
+          <p>El paso natural sería trasladar esta instalación a un modelo BIM para coordinar conductos, tuberías y equipos con la arquitectura y conectar el modelo con la simulación energética. Es la metodología en la que quiero formarme a continuación.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CONCLUSIONES -->
+  <section class="seccion" aria-labelledby="t-concl">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Conclusiones</span>
+        <h2 id="t-concl">Qué aprendí del edificio</h2>
+      </div>
+      <div class="prosa">
+        <ul class="conclusiones">
+          <li class="revelar">La <strong>bomba de calor</strong> es imprescindible: con resistencias eléctricas el coste anual sería 3,6 veces mayor.</li>
+          <li class="revelar">La <strong>operación según ocupación</strong> es la medida más rentable: apagar el sistema fuera de horario reduce el coste un 30 % sin perder confort en horas de uso.</li>
+          <li class="revelar">En Palermo, el <strong>control solar</strong> pesa más que el aislamiento: las protecciones exteriores reducen la demanda de refrigeración y la potencia punta, mientras que pasar de 4 a 2 cm de aislamiento apenas cambia el coste.</li>
+          <li class="revelar">Combinando estas medidas, el edificio llega a <strong>13,65 kWh/m² al año</strong>, en el orden de magnitud de los edificios de muy alta eficiencia.</li>
+        </ul>
+        <p class="revelar gris">Es un escenario idealizado: supone un uso correcto y constante de las protecciones solares y no incluye las pérdidas de distribución en tuberías y conductos ni el consumo de bombas y válvulas, que suelen añadir entre un 10 y un 15 % al consumo real.</p>
+      </div>
+      <a class="documento horizontal revelar" href="assets/hvac/Informe_HVAC_Carlos_Molla.pdf" download>
+        <span class="doc-etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Descargar documento</span>
+        <span class="doc-marco"><img src="assets/hvac/portada.webp" alt="Portada del informe de la simulación HVAC" width="680" height="880" loading="lazy"></span>
+        <span class="doc-pie"><strong>Informe de la simulación HVAC</strong><small>PDF en inglés, 25 páginas</small></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Otros proyectos">
+      <a href="energia.html"><span>Proyecto anterior</span><strong>Energía</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>¿Quieres saber más?</span><strong>Contacto</strong></a>
+    </nav>
+  </div>
+</main>
+
+<dialog class="visor" id="visor">
+  <img id="visor-img" src="" alt="">
+  <button type="button" id="visor-cerrar">Cerrar</button>
+</dialog>
+
+<script src="js/main.js"></script>
+<script src="js/carrusel.js"></script>
+<script src="js/hvac.js"></script>
+</body>
+</html>

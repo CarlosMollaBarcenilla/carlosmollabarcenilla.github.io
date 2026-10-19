@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inteligencia artificial | Carlos Mollá</title>
+<meta name="description" content="Proyectos de inteligencia artificial de Carlos Mollá: un motor de ajedrez propio con búsqueda alfa-beta, jugable en el navegador, y una red neuronal convolucional que juega a Pac-Man.">
+<meta property="og:title" content="Inteligencia artificial, proyectos de Carlos Mollá">
+<meta property="og:description" content="Compite contra mi motor de ajedrez y descubre cómo una red neuronal aprende a jugar a Pac-Man.">
+<meta property="og:image" content="assets/ia/ajedrez-poster.jpg">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pag-proyecto">
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html">Carlos Mollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Secciones">
+      <ul id="pestanas">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="energia.html">Energía</a></li>
+        <li><a href="hvac.html">HVAC</a></li>
+        <li><a href="ia.html" aria-current="page">IA</a></li>
+        <li><a href="sostenibilidad.html">Sostenibilidad</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla una-col">
+      <div class="herr-pagina" aria-label="Herramientas utilizadas"><span>Herramientas</span><ul><li>Python</li><li>PyTorch</li><li>NumPy</li><li>IA generativa</li></ul></div>
+      <div class="proyecto-texto">
+        <h1 id="titulo">Inteligencia artificial</h1>
+        <p class="entrada">Cursar <em>Introduction to Artificial Intelligence</em> en la Universidad de Lieja despertó mi curiosidad por cómo la inteligencia artificial toma decisiones a partir de datos. En la asignatura entrené una red neuronal que juega a Pac-Man; después quise dar un paso más y crear mi propia IA desde cero: un motor de ajedrez.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÍNDICE DE PROYECTOS -->
+  <nav class="seccion indice-seccion" aria-label="Proyectos de esta página">
+    <div class="envoltura indice">
+        <a class="indice-proy con-video revelar" href="#pacman">
+          <span class="ip-video"><video autoplay muted loop playsinline preload="metadata" poster="assets/ia/pacman-poster.jpg" aria-label="Partidas reales de la red neuronal entrenada"><source src="assets/ia/pacman-agente.webm" type="video/webm"><source src="assets/ia/pacman-agente.mp4" type="video/mp4"></video></span>
+          <span class="ip-num">Proyecto 01</span>
+          <strong>Red neuronal para Pac-Man</strong>
+          <span class="ip-ctx">Introduction to Artificial Intelligence, Universidad de Lieja</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+        <a class="indice-proy con-video revelar" href="#ajedrez" style="--retraso:.08s">
+          <span class="ip-video"><video autoplay muted loop playsinline preload="metadata" poster="assets/ia/ajedrez-poster.jpg" aria-label="Partida contra el motor de ajedrez en nivel Gran Maestro"><source src="assets/ia/ajedrez-partida.webm" type="video/webm"><source src="assets/ia/ajedrez-partida.mp4" type="video/mp4"></video></span>
+          <span class="ip-num">Proyecto 02</span>
+          <strong>Motor de ajedrez</strong>
+          <span class="ip-ctx">Proyecto personal</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+    </div>
+  </nav>
+
+
+  <!-- ===================== PAC-MAN ===================== -->
+  <section class="seccion proyecto-banda" id="pacman" aria-labelledby="t-pacman">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="banda-num">Proyecto 01</span>
+          <h2 id="t-pacman">Red neuronal para Pac-Man</h2>
+          <p class="banda-ctx">Introduction to Artificial Intelligence, Universidad de Lieja</p>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Entrené con PyTorch una red neuronal convolucional que aprende a jugar a Pac-Man a partir de ejemplos, sin reglas programadas. Partiendo de 15.018 situaciones de partida, cada una con el estado del tablero y la acción tomada, la red aprende a elegir el mejor movimiento: es aprendizaje supervisado.</p>
+          <p class="revelar">El vídeo muestra partidas reales de la red ya entrenada en laberintos que no formaban parte del conjunto de entrenamiento. Completa cada nivel esquivando al fantasma, lo que demuestra su capacidad de generalización.</p>
+          <p class="revelar">Es el mismo principio en el que se basan los modelos de IA generativa como ChatGPT o Claude: una red neuronal no recibe reglas, sino una gran cantidad de ejemplos, y ajusta sus parámetros para reducir el error de sus predicciones. Mi red aprende qué movimiento hacer a partir de partidas; un modelo de lenguaje aprende qué palabra viene después a partir de textos. La escala es muy distinta, pero la lógica de entrenamiento es la misma.</p>
+        </div>
+      </div>
+      <figure class="video-pacman revelar">
+        <video autoplay muted loop playsinline aria-label="Partidas reales de la red neuronal entrenada jugando en laberintos que no vio durante el entrenamiento">
+          <source src="assets/ia/pacman-agente.webm" type="video/webm">
+          <source src="assets/ia/pacman-agente.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Arquitectura -->
+  <section class="seccion" aria-labelledby="t-red">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Arquitectura</span>
+        <h2 id="t-red" class="titulo-naranja">Cómo funciona la red neuronal</h2>
+      </div>
+      <figure class="red3d revelar" id="red3d">
+        <div class="red3d-lienzo"><svg id="red3d-svg" viewBox="0 0 1120 400" role="img" aria-labelledby="red3d-t"><title id="red3d-t">Arquitectura de la red: entrada de 6 capas de 8 por 16 casillas, tres capas convolucionales de 16, 32 y 64 filtros que recorren el tablero, y capas densas de 512, 128 y 50 neuronas que terminan en 5 movimientos posibles</title></svg></div>
+      </figure>
+      <div class="lista-ventajas red-datos">
+        <div class="revelar"><strong>4,3 millones de parámetros</strong><span>Las capas de filtros (convolucionales) detectan patrones locales, como un fantasma cerca de un pasillo. Las capas de neuronas totalmente conectadas combinan esa información y eligen entre norte, sur, este, oeste o parar.</span></div>
+        <div class="revelar" style="--retraso:.08s"><strong>Entrenamiento</strong><span>Entropía cruzada como función de pérdida, optimizador AdamW, 30 épocas y lotes de 64 ejemplos.</span></div>
+      </div>
+      <div class="ia-aplicacion revelar">
+        <span class="antetitulo">Más allá del juego</span>
+        <p>Este mismo proceso es el que se aplica en el análisis de datos de ingeniería: preparar y codificar bien los datos, entrenar un modelo, validarlo con casos que no ha visto y medir sus resultados. Es lo que me interesa aplicar a problemas reales, como predecir la demanda energética o detectar anomalías en el funcionamiento de una instalación.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== AJEDREZ ===================== -->
+  <section class="seccion proyecto-banda" id="ajedrez" aria-labelledby="t-ajedrez">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="banda-num">Proyecto 02</span>
+          <h2 id="t-ajedrez">Motor de ajedrez</h2>
+          <p class="banda-ctx">Proyecto personal</p>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Después de la asignatura quise comprobar si era capaz de diseñar una IA completa por mi cuenta. Elegí el ajedrez por ser un juego que me apasiona desde siempre y porque es un problema clásico de toma de decisiones: hay demasiadas jugadas posibles para analizarlas todas, así que la IA tiene que decidir qué calcular y qué descartar.</p>
+          <p class="revelar">Lo abordé como un proyecto de ingeniería: definir el problema, elegir el algoritmo, medir su rendimiento y depurar hasta tener un producto que cualquiera puede usar.</p>
+        </div>
+      </div>
+
+      <div class="juego revelar" id="jugar">
+        <div class="juego-pantalla" id="juego-pantalla">
+          <img src="assets/ia/ajedrez-poster.jpg" alt="" class="juego-fondo" width="660" height="480">
+          <div class="juego-invitacion">
+            <button type="button" class="boton principal" id="juego-cargar">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              Compite contra la IA
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cómo decide: alfa-beta -->
+  <section class="seccion" id="alfabeta" aria-labelledby="t-alfabeta">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">Cómo decide</span>
+          <h2 id="t-alfabeta">Búsqueda con poda alfa-beta</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">Para elegir una jugada, la IA analiza sus opciones, las respuestas del rival y sus propias contrarrespuestas, y se queda con la que mejor resultado le garantiza aunque el rival juegue bien.</p>
+          <p class="revelar">El reto es que el número de posiciones crece de forma exponencial. La <strong>poda alfa-beta</strong> descarta las ramas que ya no pueden cambiar la decisión, y el tiempo ahorrado se invierte en calcular más jugadas por delante. Es la misma idea que en cualquier problema de optimización: no evaluar alternativas que ya sabemos que no van a ganar.</p>
+        </div>
+      </div>
+      <div class="arbol revelar" id="arbol">
+        <div class="arbol-lienzo">
+          <svg id="arbol-svg" viewBox="0 0 640 300" role="img" aria-labelledby="arbol-t">
+            <title id="arbol-t">Árbol de búsqueda de tres niveles con ocho posiciones finales. Con la poda alfa-beta solo se evalúan cinco de las ocho.</title>
+          </svg>
+        </div>
+        <div class="arbol-paso">
+          <p class="arbol-num" id="arbol-num">Paso 1 de 9</p>
+          <h3 id="arbol-titulo"></h3>
+          <p id="arbol-texto" aria-live="polite"></p>
+        </div>
+        <div class="arbol-pie">
+          <div class="arbol-nav">
+            <button type="button" class="bat-boton" id="arbol-ant" aria-label="Paso anterior">← Anterior</button>
+            <div class="arbol-puntos" id="arbol-puntos" aria-hidden="true"></div>
+            <button type="button" class="boton principal arbol-sig" id="arbol-sig" aria-label="Paso siguiente">Siguiente →</button>
+          </div>
+          <p class="arbol-contador"><strong id="arbol-n">0</strong> de 8 posiciones evaluadas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Evaluación -->
+  <section class="seccion" aria-labelledby="t-eval">
+    <div class="envoltura dos-col">
+      <div class="prosa">
+        <span class="antetitulo revelar">La evaluación</span>
+        <h2 id="t-eval" class="revelar">Cada pieza vale más en unas casillas que en otras</h2>
+        <p class="revelar">Cuando la búsqueda llega a una posición final, la IA le pone nota: suma el material de cada bando y una bonificación según la casilla que ocupa cada pieza. Un caballo en el centro controla ocho casillas; en una esquina, solo dos.</p>
+        <p class="revelar">Uso tablas pieza-casilla basadas en la conocida «Simplified Evaluation Function», en centésimas de peón. Selecciona una pieza para ver su mapa.</p>
+        <div class="estaciones revelar" role="group" aria-label="Pieza" id="pst-piezas">
+          <button type="button" class="estacion" data-pieza="caballo" aria-pressed="true">Caballo</button>
+          <button type="button" class="estacion" data-pieza="alfil" aria-pressed="false">Alfil</button>
+          <button type="button" class="estacion" data-pieza="peon" aria-pressed="false">Peón</button>
+          <button type="button" class="estacion" data-pieza="rey" aria-pressed="false">Rey</button>
+        </div>
+      </div>
+      <div class="pst revelar">
+        <div class="pst-tablero" id="pst-tablero" role="grid" aria-label="Bonificación por casilla"></div>
+        <div class="pst-escala" aria-hidden="true"><span>Penaliza</span><i></i><span>Bonifica</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Otros proyectos">
+      <a href="hvac.html"><span>Proyecto anterior</span><strong>HVAC</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>¿Quieres saber más?</span><strong>Contacto</strong></a>
+    </nav>
+  </div>
+</main>
+
+<script>window.PAC_ESTADO = {"W": 16, "H": 8, "walls": [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], "pac": [5, 1], "ghosts": [[6.0, 2.0, 0]], "food": [[8, 2], [10, 2], [14, 3]], "caps": [[4, 2], [9, 5]], "dir": "West", "asustado": [[7.5, 1.0, 37]], "pac2": [6, 2]};</script>
+<script src="js/main.js"></script>
+<script src="js/ia.js"></script>
+</body>
+</html>

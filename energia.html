@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Baterías de Carnot con CO₂ | Carlos Mollá</title>
+<meta name="description" content="Mi Trabajo Fin de Máster en la Universidad de Lieja: análisis de un ciclo de potencia transcrítico de CO₂ para la descarga de una batería de Carnot.">
+<meta property="og:title" content="Baterías de Carnot con CO₂, TFM de Carlos Mollá">
+<meta property="og:description" content="Almacenar el excedente renovable en forma de calor y devolverlo a la red con un ciclo transcrítico de CO₂.">
+<meta property="og:image" content="assets/energia/mapa-eficiencia.webp">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="pag-proyecto">
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <div class="envoltura">
+    <a class="marca" href="index.html">Carlos Mollá<span>.</span></a>
+    <nav class="pestanas" aria-label="Secciones">
+      <ul id="pestanas">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="energia.html" aria-current="page">Energía</a></li>
+        <li><a href="hvac.html">HVAC</a></li>
+        <li><a href="ia.html">IA</a></li>
+        <li><a href="sostenibilidad.html">Sostenibilidad</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+        <li class="indicador" id="indicador" aria-hidden="true"></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- CABECERA DE LA PÁGINA -->
+  <section class="proyecto-cabeza" aria-labelledby="titulo">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="envoltura proyecto-rejilla">
+      <div class="herr-pagina" aria-label="Herramientas utilizadas"><span>Herramientas</span><ul><li>Python</li><li>CoolProp</li><li>LaboThApPy</li><li>Streamlit</li><li>Pandas</li><li>Matplotlib</li><li>IA generativa</li></ul></div>
+      <div class="proyecto-texto">
+      <h1 id="titulo">Energía</h1>
+      <p class="entrada">La transición energética exige producir energía renovable, almacenarla cuando sobra y gestionarla cuando falta. En esta página presento dos proyectos que abordan ese reto desde ángulos distintos: el almacenamiento de los excedentes renovables en baterías de Carnot y el funcionamiento del mercado eléctrico.</p>
+      </div>
+      <figure class="mini-planta" aria-labelledby="mp-titulo">
+        <svg id="mp" viewBox="0 0 460 330" role="img" aria-labelledby="mp-titulo mp-desc">
+          <title id="mp-titulo">Modelo simplificado de una batería de Carnot</title>
+          <desc id="mp-desc">La generación renovable varía con el tiempo. Cuando hay excedente, la energía se almacena como calor en un depósito; cuando la generación cae, el ciclo de descarga convierte ese calor en electricidad y la entrega a la red.</desc>
+          <defs>
+            <linearGradient id="mp-cal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F29A4A"/><stop offset="1" stop-color="#D9661A"/></linearGradient>
+            <clipPath id="mp-clip"><rect x="196" y="96" width="68" height="118" rx="10"/></clipPath>
+          </defs>
+          <!-- tuberías -->
+          <path id="mp-t1" class="mp-tubo" d="M112 160 H190"/>
+          <path id="mp-t2" class="mp-tubo" d="M270 160 H306"/>
+          <g id="mp-part1"></g><g id="mp-part2"></g>
+          <!-- 1. generación renovable -->
+          <g class="mp-sol" id="mp-sol"><circle cx="40" cy="62" r="13"/><g id="mp-rayos"><path d="M40 40v-7M40 91v-7M18 62h-7M69 62h-7M24.5 46.5l-5-5M60.5 82.5l-5-5M24.5 77.5l-5 5M60.5 41.5l-5 5"/></g></g>
+          <line x1="80" y1="208" x2="80" y2="104" class="mp-torre"/>
+          <g id="mp-aspas" class="mp-aspas"><path d="M80 100 L77 64 L80 58 L83 64 Z"/><path d="M80 100 L77 64 L80 58 L83 64 Z" transform="rotate(120 80 100)"/><path d="M80 100 L77 64 L80 58 L83 64 Z" transform="rotate(240 80 100)"/><circle cx="80" cy="100" r="4.5"/></g>
+          <!-- 2. almacenamiento -->
+          <rect x="196" y="96" width="68" height="118" rx="10" class="mp-deposito"/>
+          <g clip-path="url(#mp-clip)"><path id="mp-liquido" fill="url(#mp-cal)" d=""/></g>
+          <rect x="196" y="96" width="68" height="118" rx="10" class="mp-borde"/>
+          <!-- 3. descarga: turbina + generador -->
+          <rect id="mp-rayo" x="404" y="134" width="56" height="52" rx="16" class="mp-pulso"/>
+          <line x1="370" y1="160" x2="416" y2="160" class="mp-arbol"/>
+          <circle cx="344" cy="160" r="33" class="mp-maquina"/>
+          <circle cx="344" cy="160" r="26.5" class="mp-aro"/>
+          <g id="mp-rotor" class="mp-rotor"><path d="M344 160 C354 154 358 143 354 131" transform="rotate(0 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(60 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(120 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(180 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(240 344 160)"/><path d="M344 160 C354 154 358 143 354 131" transform="rotate(300 344 160)"/></g>
+          <circle cx="344" cy="160" r="6.5" class="mp-eje"/>
+          <rect x="410" y="140" width="44" height="40" rx="11" class="mp-generador"/>
+          <path d="M435.5 146 L424.5 162.5 H432 L428.5 174 L440 157 H432.5 Z" class="mp-chispa"/>
+          <!-- etiquetas -->
+          <text class="mp-et" x="66" y="236" text-anchor="middle">Generación</text>
+          <text class="mp-et" x="66" y="253" text-anchor="middle">renovable</text>
+          <text class="mp-et" x="230" y="236" text-anchor="middle">Almacenamiento</text>
+          <text class="mp-et" x="230" y="253" text-anchor="middle">térmico</text>
+          <text class="mp-et" x="382" y="236" text-anchor="middle">Descarga</text>
+          <text class="mp-et" x="382" y="253" text-anchor="middle">(ciclo de CO₂)</text>
+          <!-- medidores -->
+          <g class="mp-medidor"><rect x="26" y="272" width="80" height="6" rx="3" class="mp-fondo"/><rect id="mp-m1" x="26" y="272" width="40" height="6" rx="3" class="mp-val-ren"/><text x="66" y="298" text-anchor="middle" class="mp-num" id="mp-n1">50 %</text></g>
+          <g class="mp-medidor"><rect x="190" y="272" width="80" height="6" rx="3" class="mp-fondo"/><rect id="mp-m2" x="190" y="272" width="40" height="6" rx="3" class="mp-val-cal"/><text x="230" y="298" text-anchor="middle" class="mp-num" id="mp-n2">50 %</text></g>
+          <g class="mp-medidor"><rect x="342" y="272" width="80" height="6" rx="3" class="mp-fondo"/><rect id="mp-m3" x="342" y="272" width="0" height="6" rx="3" class="mp-val-red"/><text x="382" y="298" text-anchor="middle" class="mp-num" id="mp-n3">0 %</text></g>
+          <text class="mp-pie" x="66" y="316" text-anchor="middle">producción</text>
+          <text class="mp-pie" x="230" y="316" text-anchor="middle">carga del depósito</text>
+          <text class="mp-pie" x="382" y="316" text-anchor="middle">entrega a la red</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ÍNDICE DE PROYECTOS -->
+  <nav class="seccion indice-seccion" aria-label="Proyectos de esta página">
+    <div class="envoltura indice">
+        <a class="indice-proy revelar" href="#tfm">
+          <span class="ip-num">Proyecto 01</span>
+          <strong>Baterías de Carnot con CO₂</strong>
+          <span class="ip-ctx">Trabajo Fin de Máster, Universidad de Lieja</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+        <a class="indice-proy revelar" href="#mercado" style="--retraso:.08s">
+          <span class="ip-num">Proyecto 02</span>
+          <strong>Simulador del mercado eléctrico</strong>
+          <span class="ip-ctx">Proyecto personal</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+        </a>
+    </div>
+  </nav>
+
+
+  <!-- ===================== PROYECTO 01: TFM ===================== -->
+  <section class="seccion proyecto-banda" id="tfm" aria-labelledby="t-tfm">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="banda-num">Proyecto 01</span>
+        <h2 id="t-tfm">Baterías de Carnot con CO₂</h2>
+        <p class="banda-ctx">Trabajo Fin de Máster, Universidad de Lieja</p>
+      </div>
+      <div class="prosa">
+        <p class="revelar">Almacenamiento de los excedentes renovables en forma de calor y su posterior conversión en electricidad. Mi trabajo se centró en la etapa de descarga: un ciclo de potencia transcrítico de CO₂ que modelé, optimicé y analicé en Python, y que defendí en inglés en junio de 2026.</p>
+        <p class="original revelar">«Part-Load Performance Analysis of a Transcritical CO₂ Low-Temperature Power Cycle»</p>
+        <ul class="datos revelar">
+        <li><strong>20,3 %</strong><span>eficiencia neta máxima del ciclo</span></li>
+        <li><strong>10 MW</strong><span>potencia neta de diseño</span></li>
+        <li><strong>130–200 °C</strong><span>temperaturas de la fuente caliente estudiadas</span></li>
+      </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. EL PROBLEMA -->
+  <section class="seccion" aria-labelledby="t-problema">
+    <div class="envoltura">
+      <div class="dos-col">
+        <div class="seccion-cabeza revelar">
+          <span class="antetitulo">El problema</span>
+          <h2 id="t-problema">La alta intermitencia de las renovables</h2>
+        </div>
+        <div class="prosa">
+          <p class="revelar">La generación solar y eólica depende de las condiciones meteorológicas, no de la demanda. Esto provoca desajustes entre producción y consumo: en las horas de máxima generación aparecen excedentes que, sin capacidad de almacenamiento, deben recortarse, mientras que en los periodos de baja producción el sistema eléctrico debe recurrir a tecnologías de respaldo.</p>
+          <p class="revelar">El almacenamiento energético es, por tanto, una pieza clave de la transición energética. Según la Agencia Internacional de la Energía (IEA), a finales de 2023 había unos 235 GW de almacenamiento instalados en el mundo, mientras que alcanzar el escenario de cero emisiones netas requeriría 1.500 GW en 2030.</p>
+          <p class="revelar">Las baterías de Carnot son una solución de almacenamiento de larga duración (LDES): convierten la electricidad en calor, lo almacenan en depósitos térmicos y lo transforman de nuevo en electricidad cuando la red lo necesita, sin depender de materias primas críticas como el litio.</p>
+        </div>
+      </div>
+
+      <!-- Animación -->
+      <div class="bateria revelar" id="bateria" aria-labelledby="t-animacion">
+        <h3 id="t-animacion" class="sr-only">Animación: un día de una batería de Carnot</h3>
+        <div class="bat-cabeza">
+          <div class="bat-estado">
+            <span class="bat-hora" id="bat-hora" aria-hidden="true">12:00</span>
+            <span class="bat-modo" id="bat-modo" data-modo="carga" aria-live="polite">Excedente renovable: carga</span>
+          </div>
+          <button class="bat-boton" id="bat-boton" type="button" aria-pressed="false">Pausar</button>
+        </div>
+        <div class="bat-grafica">
+          <svg id="bat-svg" viewBox="0 0 480 170" role="img" aria-labelledby="bat-svg-t">
+            <title id="bat-svg-t">Generación renovable y demanda a lo largo de un día</title>
+            <g id="bat-rejilla"></g>
+            <path class="gen" id="bat-gen" d=""/>
+            <path class="exc" id="bat-exc" d=""/>
+            <path class="dem" id="bat-dem" d=""/>
+            <line class="cursor" id="bat-cursor" x1="0" x2="0" y1="10" y2="140"/>
+            <g id="bat-ejes"></g>
+          </svg>
+          <div class="leyenda">
+            <span><i style="background:rgba(232,130,42,.25);border:1.5px solid var(--naranja)"></i>Generación renovable</span>
+            <span><i style="background:rgba(232,130,42,.5)"></i>Excedente que se almacena</span>
+            <span><i style="background:none;border-top:2px dashed var(--marino);height:0;margin-bottom:3px"></i>Demanda</span>
+          </div>
+        </div>
+
+        <div class="flujo">
+          <div class="nodo" id="n-ren">
+            <svg viewBox="0 0 36 36" fill="none" stroke="var(--naranja)" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="18" r="6"/><path d="M18 3v4M18 29v4M3 18h4M29 18h4M7.4 7.4l2.8 2.8M25.8 25.8l2.8 2.8M7.4 28.6l2.8-2.8M25.8 10.2l2.8-2.8"/></svg>
+            <strong style="font-size:1.25rem">Renovables</strong>
+            <small>Solar y eólica</small>
+          </div>
+          <div class="flecha" id="f-1" aria-hidden="true"></div>
+          <div class="nodo" id="n-p2h">
+            <span class="fase">Carga</span>
+            <strong>P2H</strong>
+            <small>Bomba de calor: electricidad → calor</small>
+          </div>
+          <div class="flecha" id="f-2" aria-hidden="true"></div>
+          <div class="nodo" id="n-h">
+            <div class="depositos" aria-hidden="true">
+              <div><div class="deposito caliente"><span id="dep-cal"></span></div><span class="deposito-et">Caliente</span></div>
+              <div><div class="deposito frio"><span id="dep-fri"></span></div><span class="deposito-et">Frío</span></div>
+            </div>
+            <span class="fase">Almacenamiento</span>
+            <strong>H</strong>
+            <small>Agua presurizada, 70–170 °C</small>
+          </div>
+          <div class="flecha descarga" id="f-3" aria-hidden="true"></div>
+          <div class="nodo tfm" id="n-h2p">
+            <span class="sello">Mi TFM</span>
+            <span class="fase">Descarga</span>
+            <strong>H2P</strong>
+            <small>Ciclo transcrítico de CO₂: calor → electricidad</small>
+          </div>
+          <div class="flecha descarga" id="f-4" aria-hidden="true"></div>
+          <div class="nodo" id="n-red">
+            <svg viewBox="0 0 36 36" fill="none" stroke="var(--marino)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 3 11 33M18 3l7 30M12 11h12M10 19h16M8.5 27h19M13 11l10 8M23 11l-10 8"/></svg>
+            <strong style="font-size:1.25rem">Red</strong>
+            <small>Consumo final</small>
+          </div>
+        </div>
+        <p class="nota">Esquema ilustrativo. Los perfiles de generación y demanda son orientativos y no proceden del TFM.</p>
+      </div>
+
+      <ul class="lista-ventajas" style="margin-top:clamp(2.5rem,5vw,3.5rem)">
+        <li class="revelar"><strong>Sin materias primas críticas</strong><span>Emplea medios de almacenamiento abundantes y no tóxicos, como agua, sales fundidas o rocas, en lugar de litio o cobalto.</span></li>
+        <li class="revelar" style="--retraso:.08s"><strong>Flexibilidad de emplazamiento</strong><span>A diferencia del bombeo hidráulico, no requiere condiciones geográficas específicas.</span></li>
+        <li class="revelar"><strong>Larga vida útil</strong><span>En torno a 20 años, frente a menos de 10 en la mayoría de baterías electroquímicas, ya que no depende de reacciones químicas.</span></li>
+        <li class="revelar" style="--retraso:.08s"><strong>Acoplamiento sectorial</strong><span>Al almacenar energía térmica, puede suministrar a la vez electricidad y calor útil, por ejemplo a redes de calefacción urbana.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. EL CICLO -->
+  <section class="seccion" aria-labelledby="t-ciclo">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">La descarga</span>
+        <h2 id="t-ciclo" class="titulo-naranja">El ciclo de potencia transcrítico</h2>
+      </div>
+      <div class="ciclo-bloque">
+        <figure class="diagrama revelar" id="diagrama">
+          <svg viewBox="0 0 520 390" role="group" aria-labelledby="diag-titulo diag-desc">
+          <title id="diag-titulo">Ciclo transcrítico de CO₂ en un diagrama temperatura–entropía</title>
+          <desc id="diag-desc">Ciclo de potencia transcrítico de CO₂ (descarga de la batería de Carnot). Cuatro estados: bombeo, calentamiento supercrítico hasta unos 100 °C, expansión y condensación a unos 10 °C, dibujados sobre la campana de saturación del CO₂ (punto crítico a 31 °C), junto con la fuente caliente, que se enfría a lo largo del calentador, y la fuente fría, a temperatura constante.</desc>
+          <g class="rejilla" aria-hidden="true">
+            <line x1="64" x2="500" y1="43.4" y2="43.4"/><line x1="64" x2="500" y1="140.5" y2="140.5"/>
+            <line x1="64" x2="500" y1="237.5" y2="237.5"/><line x1="64" x2="500" y1="334.6" y2="334.6"/>
+            <line x1="89.6" x2="89.6" y1="24" y2="354"/><line x1="192.2" x2="192.2" y1="24" y2="354"/>
+            <line x1="294.8" x2="294.8" y1="24" y2="354"/><line x1="397.4" x2="397.4" y1="24" y2="354"/>
+            <line x1="500" x2="500" y1="24" y2="354"/>
+          </g>
+          <g aria-hidden="true">
+            <text class="eje" x="54" y="47.4" text-anchor="end">100</text>
+            <text class="eje" x="54" y="144.5" text-anchor="end">50</text>
+            <text class="eje" x="54" y="241.5" text-anchor="end">0</text>
+            <text class="eje" x="54" y="338.6" text-anchor="end">−50</text>
+            <text class="eje" x="89.6" y="372" text-anchor="middle">0,6</text>
+            <text class="eje" x="192.2" y="372" text-anchor="middle">1,0</text>
+            <text class="eje" x="294.8" y="372" text-anchor="middle">1,4</text>
+            <text class="eje" x="397.4" y="372" text-anchor="middle">1,8</text>
+            <text class="eje" x="500" y="372" text-anchor="middle">2,2</text>
+            <text class="eje-titulo" x="282" y="390" text-anchor="middle">Entropía s [kJ/(kg·K)]</text>
+            <text class="eje-titulo" x="14" y="16">T [°C]</text>
+            <line class="critico" x1="64" x2="500" y1="177.4" y2="177.4"/>
+            <text class="eje" x="70" y="171">T crítica = 31 °C</text>
+          </g>
+          <path class="campana" d="M69.1 348.2 C75.1 342.7 93.0 326.2 105.0 315.2 C117.0 304.2 129.8 292.2 140.9 282.2 C152.0 272.2 163.1 263.4 171.7 255.0 C180.2 246.6 184.5 239.1 192.2 231.7 C199.9 224.3 208.5 217.2 217.9 210.4 C227.3 203.6 239.3 195.9 248.7 190.9 C258.1 185.9 266.2 182.6 274.3 180.3 C282.4 178.1 289.7 177.6 297.4 177.4 C305.1 177.2 312.4 177.7 320.5 179.3 C328.6 180.9 337.6 183.4 346.1 187.1 C354.7 190.8 363.2 195.9 371.8 201.6 C380.4 207.3 388.8 214.9 397.4 221.2 C405.9 227.5 414.6 233.2 423.1 239.5 C431.7 245.8 441.0 249.5 448.7 258.9 C456.4 268.3 463.2 280.9 469.2 295.8 C475.2 310.7 482.0 339.5 484.6 348.2"/>
+          <g class="fuentes" aria-hidden="true">
+            <defs><marker id="punta-cal" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#D2463C"/></marker>
+            <marker id="punta-fri" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#3E78B3"/></marker></defs>
+            <path class="fuente-cal" d="M392.3 22.1 L217 179.3" marker-end="url(#punta-cal)"/>
+            <text class="et-cal" x="262" y="108" transform="rotate(-41.9 262 108)">Fuente caliente</text>
+            <path class="fuente-fri" d="M197.4 239.5 L435.9 239.5" marker-end="url(#punta-fri)"/>
+            <text class="et-fri" x="316" y="258" text-anchor="middle">Fuente fría</text>
+          </g>
+          <path class="ciclo" d="M202 227 L206.3 207.8 C209.1 204.7 214.7 197.6 223.0 189.0 C231.3 180.4 242.3 165.7 256.4 156.0 C270.5 146.3 292.7 138.9 307.6 130.8 C322.6 122.7 334.1 116.6 346.1 107.5 C358.1 98.4 370.4 88.4 379.5 76.4 C388.6 64.4 397.4 42.4 401.0 35.6 L408.7 200.8 L392.3 217.7 L211.5 217.7 Z"/>
+          <g class="tramos" aria-hidden="true">
+            <path class="tramo" data-tramo="0" pathLength="1" d="M202 227 L206.3 207.8"/>
+            <path class="tramo" data-tramo="1" pathLength="1" d="M206.3 207.8 C209.1 204.7 214.7 197.6 223.0 189.0 C231.3 180.4 242.3 165.7 256.4 156.0 C270.5 146.3 292.7 138.9 307.6 130.8 C322.6 122.7 334.1 116.6 346.1 107.5 C358.1 98.4 370.4 88.4 379.5 76.4 C388.6 64.4 397.4 42.4 401.0 35.6"/>
+            <path class="tramo" data-tramo="2" pathLength="1" d="M401 35.6 L408.7 200.8"/>
+            <path class="tramo" data-tramo="3" pathLength="1" d="M408.7 200.8 L392.3 217.7 L211.5 217.7 L202 227"/>
+          </g>
+          <g class="estado" data-paso="0" tabindex="0" role="button" aria-label="Estado 1: bombeo">
+            <circle class="aura" cx="202" cy="227" r="16"/><circle class="punto" cx="202" cy="227" r="6.5"/>
+            <text x="182" y="222">1</text>
+          </g>
+          <g class="estado" data-paso="1" tabindex="0" role="button" aria-label="Estado 2: calentamiento">
+            <circle class="aura" cx="206.3" cy="207.8" r="16"/><circle class="punto" cx="206.3" cy="207.8" r="6.5"/>
+            <text x="186" y="203">2</text>
+          </g>
+          <g class="estado" data-paso="2" tabindex="0" role="button" aria-label="Estado 3: expansión">
+            <circle class="aura" cx="401" cy="35.6" r="16"/><circle class="punto" cx="401" cy="35.6" r="6.5"/>
+            <text x="414" y="32">3</text>
+          </g>
+          <g class="estado" data-paso="3" tabindex="0" role="button" aria-label="Estado 4: condensación">
+            <circle class="aura" cx="408.7" cy="200.8" r="16"/><circle class="punto" cx="408.7" cy="200.8" r="6.5"/>
+            <text x="422" y="197">4</text>
+          </g>
+        </svg>
+        </figure>
+        <div class="prosa">
+          <p class="revelar">En la etapa de descarga, el CO₂ describe un ciclo Rankine transcrítico: opera por encima de su punto crítico (31,1 °C y 73,8 bar) en el lado de alta presión y por debajo de él en el de baja. Al seleccionar cada etapa se resalta su recorrido en el diagrama.</p>
+          <ol class="pasos-ciclo revelar" id="pasos">
+            <li tabindex="0" data-paso="0"><strong>1 → 2  Bombeo</strong><span>La bomba eleva la presión del CO₂ líquido por encima de su presión crítica.</span></li>
+            <li tabindex="0" data-paso="1"><strong>2 → 3  Calentamiento</strong><span>El CO₂ se precalienta en el recuperador y absorbe el calor de la fuente caliente en estado supercrítico, sin cambio de fase.</span></li>
+            <li tabindex="0" data-paso="2"><strong>3 → 4  Expansión</strong><span>El fluido se expande en la turbina, que acciona el generador y devuelve la energía a la red.</span></li>
+            <li tabindex="0" data-paso="3"><strong>4 → 1  Condensación</strong><span>Tras ceder calor en el recuperador, el CO₂ condensa frente a la fuente fría y retorna a la aspiración de la bomba.</span></li>
+          </ol>
+        </div>
+      </div>
+      <h3 class="subtitulo-naranja revelar">Ventajas del ciclo transcrítico de CO₂</h3>
+      <div class="por-que">
+        <div class="revelar"><strong>Acoplamiento térmico</strong><span>En estado supercrítico, el CO₂ se calienta con un deslizamiento de temperatura que se adapta al de la fuente, lo que reduce la destrucción de exergía en el intercambio de calor.</span></div>
+        <div class="revelar" style="--retraso:.06s"><strong>Equipos compactos</strong><span>La elevada densidad del CO₂ cerca del punto crítico permite reducir el tamaño de la turbomaquinaria y de los intercambiadores.</span></div>
+        <div class="revelar" style="--retraso:.12s"><strong>Bombeo frente a compresión</strong><span>Al presurizar el fluido en fase líquida, el trabajo requerido es muy inferior al de un compresor.</span></div>
+        <div class="revelar" style="--retraso:.18s"><strong>Fluido seguro y sostenible</strong><span>No es inflamable ni tóxico en concentraciones moderadas, con un potencial de agotamiento de ozono nulo y un potencial de calentamiento global (GWP) de 1.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CÓMO LO HICE -->
+  <section class="seccion" aria-labelledby="t-metodo">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Metodología</span>
+        <h2 id="t-metodo">Del modelo a la estrategia de control</h2>
+      </div>
+      <ol class="metodo">
+        <li class="revelar"><h3>Modelo del ciclo</h3><p>Desarrollé en Python un modelo en régimen estacionario del ciclo con recuperador, con la librería LaboThApPy de la Universidad de Lieja y CoolProp para las propiedades del CO₂. Los intercambiadores se discretizaron para capturar la fuerte no linealidad del calor específico cerca del punto crítico.</p></li>
+        <li class="revelar" style="--retraso:.08s"><h3>Optimización en diseño</h3><p>Mediante un algoritmo de optimización por enjambre de partículas (PSO), identifiqué para cada par de temperaturas de las fuentes caliente (130–200 °C) y fría (0,1–20 °C) el punto de operación de máxima eficiencia neta, con una potencia neta fija de 10 MW.</p></li>
+        <li class="revelar" style="--retraso:.16s"><h3>Análisis fuera de diseño</h3><p>Con la geometría de los equipos fijada en el punto de diseño, analicé la respuesta del ciclo a variaciones de ±15 % en las velocidades de bomba y expansor y a cambios en las condiciones de contorno. A partir de ello propuse una estructura de variables controladas y manipuladas.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. RESULTADOS -->
+  <section class="seccion" aria-labelledby="t-resultados">
+    <div class="envoltura">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Análisis</span>
+        <h2 id="t-resultados" class="titulo-naranja">Resultados principales</h2>
+      </div>
+      <div class="carrusel revelar" id="carrusel" role="region" aria-roledescription="carrusel" aria-label="Resultados del TFM">
+        <div class="carrusel-pista" id="pista" tabindex="0">
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="1 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/mapa-eficiencia.webp" aria-label="Ampliar figura: Eficiencia neta del ciclo"><img src="assets/energia/mapa-eficiencia.webp" alt="Mapa de eficiencia neta del ciclo en función de las temperaturas de las fuentes caliente y fría" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">01 / 08</span><h3>Eficiencia neta del ciclo</h3><p>La eficiencia aumenta con la temperatura de la fuente caliente y disminuye con la de la fuente fría. El óptimo global se sitúa en la esquina más favorable: 200 °C y 0,1 °C.</p><p class="clave">20,3 % de eficiencia neta máxima, en torno al 48 % del límite de Carnot.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="2 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/mapa-presion.webp" aria-label="Ampliar figura: Presión óptima del lado de alta"><img src="assets/energia/mapa-presion.webp" alt="Mapa de la presión óptima del lado de alta" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">02 / 08</span><h3>Presión óptima del lado de alta</h3><p>Para cada par de temperaturas existe una presión óptima. Aumentarla mejora el acoplamiento térmico con la fuente caliente, pero incrementa el trabajo de bombeo.</p><p class="clave">De unos 145 bar a 130 °C hasta unos 230 bar a 200 °C.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="3 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/mapa-caudal-co2.webp" aria-label="Ampliar figura: Caudal de CO₂"><img src="assets/energia/mapa-caudal-co2.webp" alt="Mapa del caudal óptimo de CO2" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">03 / 08</span><h3>Caudal de CO₂</h3><p>Para mantener una potencia neta constante de 10 MW, el caudal requerido varía de forma significativa con las condiciones de contorno. Este rango define la capacidad de regulación exigida a la bomba.</p><p class="clave">De 161 kg/s en el punto óptimo a unos 465 kg/s en el caso más desfavorable: un factor de tres.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="4 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/mapa-caudal-fuente.webp" aria-label="Ampliar figura: Caudal de la fuente caliente"><img src="assets/energia/mapa-caudal-fuente.webp" alt="Mapa del caudal óptimo de la fuente caliente" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">04 / 08</span><h3>Caudal de la fuente caliente</h3><p>Cuanto mayor es la temperatura de la fuente caliente, menor es el caudal necesario para aportar el mismo calor. Su modulación permite regular la energía térmica que entra en el ciclo.</p><p class="clave">De unos 80 a 350 kg/s: un factor de 4,4.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="5 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/fuera-diseno-nominal.webp" aria-label="Ampliar figura: Fuera de diseño: autoridad de los actuadores"><img src="assets/energia/fuera-diseno-nominal.webp" alt="Mapas fuera de diseño en el punto nominal en función de las velocidades de bomba y expansor" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">05 / 08</span><h3>Fuera de diseño: autoridad de los actuadores</h3><p>Con la geometría fijada, se variaron las velocidades de bomba y expansor en ±15 %. Las isolíneas casi horizontales de presión y caudal indican que ambas variables dependen casi exclusivamente de la bomba.</p><p class="clave">La velocidad de la bomba gobierna la presión y el caudal del ciclo.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="6 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/barrido-t-caliente.webp" aria-label="Ampliar figura: Sensibilidad a la fuente caliente"><img src="assets/energia/barrido-t-caliente.webp" alt="Mapas fuera de diseño para cinco temperaturas de la fuente caliente" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">06 / 08</span><h3>Sensibilidad a la fuente caliente</h3><p>Entre 135 y 190 °C, la eficiencia y la potencia aumentan sin modificar las consignas de los actuadores, mientras que la presión apenas varía (152,7–153,8 bar).</p><p class="clave">Eficiencia de 9,2 % a 14,6 % y potencia de 7,1 a 13,1 MW.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="7 de 8">
+            <figure><button type="button" class="ampliar" data-src="assets/energia/barrido-t-fria.webp" aria-label="Ampliar figura: Sensibilidad a la fuente fría"><img src="assets/energia/barrido-t-fria.webp" alt="Mapas fuera de diseño para cinco temperaturas de la fuente fría" loading="lazy"></button></figure>
+            <div class="texto"><span class="num">07 / 08</span><h3>Sensibilidad a la fuente fría</h3><p>Es la perturbación principal: un sumidero más cálido reduce la densidad del CO₂ en la aspiración de la bomba, lo que disminuye el caudal y la relación de expansión en la turbina.</p><p class="clave">De 0,1 a 20 °C, la eficiencia cae de 11,5 % a 9,0 % y la potencia casi se reduce a la mitad, de 10,1 a 5,4 MW.</p></div>
+          </article>
+          <article class="diapositiva" role="group" aria-roledescription="diapositiva" aria-label="8 de 8">
+            <figure class="grafica-svg"><svg viewBox="0 0 640 395" role="img" aria-labelledby="g23t g23d"><title id="g23t">Potencia neta frente al caudal de la fuente caliente</title><desc id="g23d">154 kg/s: 7,0 MW; 173 kg/s: 8,3 MW; 192 kg/s (nominal): 9,2 MW; 211 kg/s: 9,7 MW; 231 kg/s: 9,8 MW.</desc><line x1="70.0" x2="70.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="70.0" y="362" text-anchor="middle">140</text><line x1="178.0" x2="178.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="178.0" y="362" text-anchor="middle">160</text><line x1="286.0" x2="286.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="286.0" y="362" text-anchor="middle">180</text><line x1="394.0" x2="394.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="394.0" y="362" text-anchor="middle">200</text><line x1="502.0" x2="502.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="502.0" y="362" text-anchor="middle">220</text><line x1="610.0" x2="610.0" y1="30" y2="340" stroke="var(--linea)"/><text class="eje" x="610.0" y="362" text-anchor="middle">240</text><line x1="70" x2="610" y1="340.0" y2="340.0" stroke="var(--linea)"/><text class="eje" x="58" y="344.0" text-anchor="end">6</text><line x1="70" x2="610" y1="271.1" y2="271.1" stroke="var(--linea)"/><text class="eje" x="58" y="275.1" text-anchor="end">7</text><line x1="70" x2="610" y1="202.2" y2="202.2" stroke="var(--linea)"/><text class="eje" x="58" y="206.2" text-anchor="end">8</text><line x1="70" x2="610" y1="133.3" y2="133.3" stroke="var(--linea)"/><text class="eje" x="58" y="137.3" text-anchor="end">9</text><line x1="70" x2="610" y1="64.4" y2="64.4" stroke="var(--linea)"/><text class="eje" x="58" y="68.4" text-anchor="end">10</text>
+<path d="M145.6 271.1 L248.2 181.6 L352.1 119.6 L453.4 85.1 L561.4 78.2" fill="none" stroke="var(--marino)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="145.6" cy="271.1" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/><circle cx="248.2" cy="181.6" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/><circle cx="352.1" cy="119.6" r="7" fill="var(--naranja)" stroke="#fff" stroke-width="2"/><circle cx="453.4" cy="85.1" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/><circle cx="561.4" cy="78.2" r="5" fill="var(--marino)" stroke="#fff" stroke-width="2"/>
+<text x="352.1" y="103.6" text-anchor="end" font-size="13" font-weight="500" fill="var(--naranja-texto)" font-family="var(--f-texto)">Punto nominal, 9,2 MW</text>
+<text x="258.2" y="211.6" font-size="13" fill="var(--gris)" font-family="var(--f-texto)">+1,3 MW</text>
+<text x="507.4" y="108.2" text-anchor="middle" font-size="13" fill="var(--gris)" font-family="var(--f-texto)">+0,1 MW</text>
+<text class="titulo-eje" x="340" y="390" text-anchor="middle">Caudal de la fuente caliente [kg/s]</text>
+<text class="titulo-eje" x="16" y="20">Potencia neta [MW]</text></svg></figure>
+            <div class="texto"><span class="num">08 / 08</span><h3>Rendimientos decrecientes del caudal caliente</h3><p>Aumentar el caudal de la fuente caliente eleva la potencia, pero con rendimientos decrecientes: el calentador alcanza su límite de transferencia de calor.</p><p class="clave">De 154 a 173 kg/s se ganan 1,3 MW; de 211 a 231 kg/s, solo 0,1 MW. No se justifica un caudal mayor del necesario.</p></div>
+          </article>
+        </div>
+        <div class="carrusel-controles">
+          <button class="carrusel-boton" id="anterior" type="button" aria-label="Resultado anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+          <button class="carrusel-boton" id="siguiente" type="button" aria-label="Resultado siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+          <div class="puntos" id="puntos"></div>
+          <span class="contador" id="contador" aria-live="polite">1 / 8</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CONCLUSIONES -->
+  <section class="seccion" aria-labelledby="t-concl">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="antetitulo">Conclusiones</span>
+        <h2 id="t-concl">Estrategia de control propuesta</h2>
+      </div>
+      <div class="prosa">
+        <ul class="conclusiones">
+          <li class="revelar">La <strong>presión del lado de alta</strong> es la principal variable controlada y se regula fundamentalmente mediante la <strong>velocidad de la bomba</strong>.</li>
+          <li class="revelar">La <strong>temperatura de la fuente fría</strong> es la perturbación principal: debe medirse e incorporarse como prealimentación (feedforward) en el lazo de control de la bomba.</li>
+          <li class="revelar">El <strong>caudal de la fuente caliente</strong> y la <strong>velocidad del expansor</strong> actúan como actuadores secundarios, con efecto sobre la eficiencia y la potencia, pero no sobre la presión.</li>
+          <li class="revelar">La velocidad del expansor debe subordinarse a la de la bomba: aumentarla solo resulta beneficioso cuando el caudal es suficiente.</li>
+        </ul>
+        <p class="revelar gris">El estudio se limita al régimen estacionario. Como trabajo futuro se plantea un modelo dinámico para validar la estrategia en lazo cerrado, por ejemplo mediante control predictivo (MPC), y su acoplamiento con la etapa de carga para evaluar la eficiencia de ida y vuelta del sistema completo.</p>
+      </div>
+      <a class="documento horizontal revelar" href="assets/energia/TFM_Carlos_Molla_Baterias_Carnot_CO2.pdf" download>
+        <span class="doc-etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Descargar documento</span>
+        <span class="doc-marco"><img src="assets/energia/portada.webp" alt="Portada del Trabajo Fin de Máster sobre baterías de Carnot con CO₂" width="663" height="937" loading="lazy"></span>
+        <span class="doc-pie"><strong>Trabajo Fin de Máster</strong><small>PDF en inglés, 60 páginas</small></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== MERCADO ELÉCTRICO ===================== -->
+  <!-- ===================== PROYECTO 02: MERCADO ===================== -->
+  <section class="seccion proyecto-banda seccion-mercado" id="mercado" aria-labelledby="t-mercado">
+    <div class="envoltura dos-col">
+      <div class="seccion-cabeza revelar">
+        <span class="banda-num">Proyecto 02</span>
+        <h2 id="t-mercado">Simulador del mercado eléctrico</h2>
+        <p class="banda-ctx">Proyecto personal</p>
+      </div>
+      <div class="prosa">
+        <p class="revelar">Para entender cómo se forma el precio de la electricidad, desarrollé en Python y Streamlit una aplicación web que simula en tiempo real el mercado eléctrico mayorista. Está pensada para sesiones de formación: una persona actúa como operador del mercado desde el ordenador y el resto participa desde el móvil como empresas de generación.</p>
+        <div class="acciones revelar">
+          <a class="boton principal" href="https://simuladormercado2-tf9xg2yjxcjjfs5dufe6jl.streamlit.app/" target="_blank" rel="noopener">Probar el simulador</a>
+          <a class="boton" href="https://github.com/chartiprojects/SimuladorMercado2" target="_blank" rel="noopener">Ver el código en GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="envoltura">
+      <ol class="pasos-tfg pasos-juego">
+        <li class="revelar"><span>01</span><strong>El operador del mercado</strong><p>Quien dirige la partida abre una sala en su ordenador, la proyecta en pantalla y muestra un código QR. En cada hora de la jornada publica la demanda prevista y la producción renovable.</p></li>
+        <li class="revelar" style="--retraso:.06s"><span>02</span><strong>Las empresas</strong><p>Los participantes escanean el QR con el móvil y registran su empresa de generación. Cada una gestiona cuatro centrales (nuclear, carbón, ciclo combinado y gas) y envía cuánta potencia ofrece y a qué precio.</p></li>
+        <li class="revelar" style="--retraso:.12s"><span>03</span><strong>La casación</strong><p>El operador casa el mercado: las ofertas se ordenan de la más barata a la más cara hasta cubrir la demanda y la última aceptada fija el precio para todas. Si no se cubre, hay apagón y se repite la ronda.</p></li>
+        <li class="revelar" style="--retraso:.18s"><span>04</span><strong>La clasificación</strong><p>Tras cinco horas de jornada gana la empresa con más beneficio, una vez descontados los costes de operación, de arranque y parada y de los cambios bruscos de potencia.</p></li>
+      </ol>
+    </div>
+    <div class="envoltura">
+      <div class="merito revelar" id="merito">
+        <div class="merito-cab">
+          <div>
+            <h3>Así se fija el precio</h3>
+            <p class="gris">Elige una hora de la partida: las centrales se ordenan de menor a mayor coste y la última necesaria para cubrir la demanda marca el precio para todas.</p>
+          </div>
+          <div class="capas-botones" role="group" aria-label="Hora" id="merito-horas"></div>
+        </div>
+        <div class="merito-datos" aria-live="polite">
+          <div><span>Demanda</span><strong id="mo-dem">–</strong></div>
+          <div><span>Renovables</span><strong id="mo-ren">–</strong></div>
+          <div><span>Demanda residual</span><strong id="mo-res">–</strong></div>
+          <div class="destaca"><span>Precio marginal</span><strong id="mo-precio">–</strong></div>
+        </div>
+        <div class="merito-lienzo"><svg id="merito-svg" viewBox="0 0 760 320" role="img" aria-labelledby="mo-t"><title id="mo-t">Curva de orden de mérito con la demanda de la hora seleccionada</title></svg></div>
+        <div class="cem-leyenda merito-leyenda" aria-hidden="true"><span><i style="background:#4E9E6C"></i>Renovables</span><span><i style="background:#1B2C4F"></i>Nuclear</span><span><i style="background:#5A6478"></i>Carbón</span><span><i style="background:#3E78B3"></i>Ciclo combinado</span><span><i style="background:#E8822A"></i>Gas (punta)</span></div>
+        <p class="nota">Demanda, renovables y costes reales del simulador para una partida de cuatro empresas, suponiendo que todas ofertan a su coste variable. En el juego, cada jugador decide su oferta y el precio puede subir.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="envoltura">
+    <nav class="siguiente-proyecto" aria-label="Otros proyectos">
+      <a href="index.html"><span>Volver a</span><strong>Inicio</strong></a>
+      <a href="index.html#contacto" style="text-align:right"><span>¿Quieres saber más?</span><strong>Contacto</strong></a>
+    </nav>
+  </div>
+</main>
+
+<dialog class="visor" id="visor">
+  <img id="visor-img" src="" alt="">
+  <button type="button" id="visor-cerrar">Cerrar</button>
+</dialog>
+
+<script src="js/main.js"></script>
+<script src="js/carrusel.js"></script>
+<script src="js/energia.js"></script>
+</body>
+</html>
