@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-		<title>Chess</title>
+		<title>ChessAI, by Carlos Mollá</title>
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -76,7 +76,11 @@ body {
 	margin: 0 auto;
 }
 
+#status { background-color: #120d09; transition: opacity .45s ease; }
+#status.saliendo { opacity: 0; }
+#pixel-carga { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
 #status-notice {
+	position: relative;
 	background-color: #5b3943;
 	border-radius: 0.5rem;
 	border: 1px solid #9b3943;
@@ -104,14 +108,195 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+			<canvas id="pixel-carga" aria-label="ChessAI, by Carlos Mollá. Cargando"></canvas>
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
 
+		<script>
+// Pantalla de carga en pixel art: «ChessAI, by Carlos Mollá» y barra segmentada.
+var PixelCarga = (function () {
+	"use strict";
+	// Fuente propia de 5 columnas y 11 filas (0-1 acento, 2-8 cuerpo, 9-10 descendentes).
+	var G = {
+		"C": ["", "", ".###.", "#...#", "#....", "#....", "#....", "#...#", ".###."],
+		"h": ["", "", "#....", "#....", "#.##.", "##..#", "#...#", "#...#", "#...#"],
+		"e": ["", "", "", "", ".###.", "#...#", "#####", "#....", ".###."],
+		"s": ["", "", "", "", ".####", "#....", ".###.", "....#", "####."],
+		"A": ["", "", ".###.", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
+		"I": ["", "", "###", ".#.", ".#.", ".#.", ".#.", ".#.", "###"],
+		"b": ["", "", "#....", "#....", "#.##.", "##..#", "#...#", "#...#", "####."],
+		"y": ["", "", "", "", "#...#", "#...#", "#...#", "#...#", ".####", "....#", ".###."],
+		"a": ["", "", "", "", ".###.", "....#", ".####", "#...#", ".####"],
+		"á": ["", "", "...#.", "..#..", ".###.", "....#", ".####", "#...#", ".####"],
+		"r": ["", "", "", "", "#.##.", "##..#", "#....", "#....", "#...."],
+		"l": ["", "", "##.", ".#.", ".#.", ".#.", ".#.", ".#.", "###"],
+		"o": ["", "", "", "", ".###.", "#...#", "#...#", "#...#", ".###."],
+		"M": ["", "", "#...#", "##.##", "#.#.#", "#.#.#", "#...#", "#...#", "#...#"],
+		"c": ["", "", "", "", ".###.", "#....", "#....", "#....", ".###."],
+		"g": ["", "", "", "", ".####", "#...#", "#...#", "#...#", ".####", "....#", ".###."],
+		"n": ["", "", "", "", "#.##.", "##..#", "#...#", "#...#", "#...#"],
+		"d": ["", "", "....#", "....#", ".##.#", "#..##", "#...#", "#...#", ".####"],
+		",": ["", "", "", "", "", "", "", ".#", ".#", "#."],
+		"0": ["", "", ".###.", "#...#", "#..##", "#.#.#", "##..#", "#...#", ".###."],
+		"1": ["", "", "..#..", ".##..", "..#..", "..#..", "..#..", "..#..", ".###."],
+		"2": ["", "", ".###.", "#...#", "....#", "...#.", "..#..", ".#...", "#####"],
+		"3": ["", "", "####.", "....#", "....#", ".###.", "....#", "....#", "####."],
+		"4": ["", "", "...#.", "..##.", ".#.#.", "#..#.", "#####", "...#.", "...#."],
+		"5": ["", "", "#####", "#....", "####.", "....#", "....#", "#...#", ".###."],
+		"6": ["", "", ".###.", "#....", "#....", "####.", "#...#", "#...#", ".###."],
+		"7": ["", "", "#####", "....#", "...#.", "..#..", ".#...", ".#...", ".#..."],
+		"8": ["", "", ".###.", "#...#", "#...#", ".###.", "#...#", "#...#", ".###."],
+		"9": ["", "", ".###.", "#...#", "#...#", ".####", "....#", "....#", ".###."],
+		"%": ["", "", "##..#", "##..#", "...#.", "..#..", ".#...", "#..##", "#..##"]
+	};
+	function ancho(c) {
+		if (c === " ") return 3;
+		var g = G[c]; var w = 0;
+		for (var i = 0; i < g.length; i++) w = Math.max(w, g[i].length);
+		return w;
+	}
+	function medir(t) {
+		var w = 0;
+		for (var i = 0; i < t.length; i++) w += ancho(t[i]) + (i ? 1 : 0);
+		return w;
+	}
+
+	var cv, cx, P = 1, ox = 0, oy = 0;
+	var objetivo = 0, mostrado = 0, activo = true, fin = null, t0 = performance.now();
+	var W = 172, H = 126; // resolución lógica
+
+	var ORO = "#E9B949", ORO_OSC = "#8A6420", SOMBRA = "#3A2810", CREMA = "#EADFC6", TENUE = "#7D6B55";
+	var FONDO_A = "#120D09", FONDO_B = "#18120C", MARCO = "#5A4224";
+
+	function px(x, y, w, h, col) {
+		cx.fillStyle = col;
+		cx.fillRect(ox + x * P, oy + y * P, w * P, h * P);
+	}
+	function texto(t, x, y, esc, col, sombra) {
+		var cxp = x;
+		for (var i = 0; i < t.length; i++) {
+			var c = t[i];
+			if (c !== " ") {
+				var g = G[c];
+				for (var f = 0; f < g.length; f++) {
+					for (var k = 0; k < g[f].length; k++) {
+						if (g[f][k] === "#") {
+							if (sombra) px(cxp + k * esc + 1, y + f * esc + 1, esc, esc, sombra);
+							px(cxp + k * esc, y + f * esc, esc, esc, col);
+						}
+					}
+				}
+			}
+			cxp += (ancho(c) + 1) * esc;
+		}
+	}
+	function centrado(t, y, esc, col, sombra) {
+		texto(t, Math.round((W - medir(t) * esc) / 2), y, esc, col, sombra);
+	}
+
+	function ajustar() {
+		var r = window.devicePixelRatio || 1;
+		cv.width = Math.round(cv.clientWidth * r);
+		cv.height = Math.round(cv.clientHeight * r);
+		P = Math.max(1, Math.floor(Math.min(cv.width / W, cv.height / H)));
+		ox = Math.floor((cv.width - W * P) / 2);
+		oy = Math.floor((cv.height - H * P) / 2);
+	}
+
+	function dibujar(ahora) {
+		if (!activo) return;
+		var t = (ahora - t0) / 1000;
+		mostrado += (objetivo - mostrado) * 0.12;
+		if (fin && mostrado > 0.995) { mostrado = 1; }
+
+		// Fondo: tablero muy tenue en toda la pantalla
+		cx.fillStyle = FONDO_A;
+		cx.fillRect(0, 0, cv.width, cv.height);
+		var c = 12 * P;
+		cx.fillStyle = FONDO_B;
+		for (var yy = oy % (2 * c) - 2 * c; yy < cv.height; yy += c) {
+			for (var xx = ox % (2 * c) - 2 * c; xx < cv.width; xx += c) {
+				if (((Math.round((xx - ox) / c) + Math.round((yy - oy) / c)) & 1) === 0) cx.fillRect(xx, yy, c, c);
+			}
+		}
+
+		// Título
+		centrado("ChessAI", 18, 3, ORO, SOMBRA);
+		// Ornamento: línea fina con rombo central
+		var cxm = W / 2;
+		px(cxm - 34, 57, 29, 1, ORO_OSC);
+		px(cxm + 5, 57, 29, 1, ORO_OSC);
+		px(cxm - 1, 55, 2, 1, ORO); px(cxm - 2, 56, 4, 1, ORO); px(cxm - 2, 57, 4, 1, ORO); px(cxm - 1, 58, 2, 1, ORO);
+		// Autor
+		centrado("by Carlos Mollá", 61, 1, CREMA, null);
+
+		// Barra: marco con esquinas recortadas
+		var bw = 104, bh = 9, bx = Math.round((W - bw) / 2), by = 86;
+		px(bx + 1, by, bw - 2, 1, MARCO); px(bx + 1, by + bh - 1, bw - 2, 1, MARCO);
+		px(bx, by + 1, 1, bh - 2, MARCO); px(bx + bw - 1, by + 1, 1, bh - 2, MARCO);
+		// Segmentos de 3 px con 1 px de separación
+		var interior = bw - 6, n = Math.floor((interior + 1) / 4);
+		var llenos = Math.round(mostrado * n);
+		for (var i = 0; i < n; i++) {
+			var x = bx + 3 + i * 4;
+			if (i < llenos) {
+				px(x, by + 2, 3, bh - 4, ORO);
+				px(x, by + bh - 3, 3, 1, ORO_OSC);
+			} else {
+				px(x, by + 2, 3, bh - 4, "#1F170F");
+			}
+		}
+		// Brillo que recorre la parte llena
+		if (llenos > 0 && !fin) {
+			var b = Math.floor(t * 14) % (llenos + 6);
+			if (b < llenos) px(bx + 3 + b * 4, by + 2, 3, 1, "#FFF1C2");
+		}
+
+		// Estado
+		var pct = Math.round(mostrado * 100) + "%";
+		var puntos = Math.floor(t * 2.5) % 4;
+		var w1 = medir("cargando");
+		var xl = bx;
+		texto("cargando", xl, 99, 1, TENUE, null);
+		for (var d = 0; d < 3; d++) if (d < puntos) px(xl + w1 + 2 + d * 3, 106, 1, 1, TENUE);
+		texto(pct, bx + bw - medir(pct), 99, 1, CREMA, null);
+
+		requestAnimationFrame(dibujar);
+	}
+
+	function iniciar() {
+		cv = document.getElementById("pixel-carga");
+		if (!cv) return;
+		cx = cv.getContext("2d");
+		ajustar();
+		window.addEventListener("resize", ajustar);
+		requestAnimationFrame(dibujar);
+	}
+	if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
+
+	return {
+		progreso: function (f) { objetivo = Math.max(objetivo, Math.min(1, f) * 0.96); },
+		terminar: function (hecho) {
+			objetivo = 1; fin = true;
+			var capa = document.getElementById("status");
+			var esperar = function () {
+				if (mostrado < 0.995) { setTimeout(esperar, 60); return; }
+				setTimeout(function () {
+					capa.classList.add("saliendo");
+					setTimeout(function () { activo = false; hecho(); }, 480);
+				}, 450);
+			};
+			esperar();
+		},
+		parar: function () { activo = false; if (cv) cv.style.display = "none"; }
+	};
+}());
+
+		</script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":341472,"index.wasm":36145869},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--audio-driver","Dummy"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":341472,"index.wasm":36145869},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
@@ -128,12 +313,12 @@ const engine = new Engine(GODOT_CONFIG);
 			return;
 		}
 		if (mode === 'hidden') {
-			statusOverlay.remove();
 			initializing = false;
+			PixelCarga.terminar(function () { statusOverlay.remove(); });
 			return;
 		}
 		statusOverlay.style.visibility = 'visible';
-		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusProgress.style.display = 'none';
 		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
 		statusMode = mode;
 	}
@@ -158,6 +343,7 @@ const engine = new Engine(GODOT_CONFIG);
 		} else {
 			setStatusNotice('An unknown error occurred.');
 		}
+		PixelCarga.parar();
 		setStatusMode('notice');
 		initializing = false;
 	}
@@ -204,6 +390,7 @@ const engine = new Engine(GODOT_CONFIG);
 				if (current > 0 && total > 0) {
 					statusProgress.value = current;
 					statusProgress.max = total;
+					PixelCarga.progreso(current / total);
 				} else {
 					statusProgress.removeAttribute('value');
 					statusProgress.removeAttribute('max');
